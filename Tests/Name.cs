@@ -10,7 +10,7 @@ namespace CxxDemangler.Tests
         public void NameNested()
         {
             Verify("NS0_3abcE...",
-                new NestedName(
+                new Parsers.NestedName(
                     new Prefix.NestedName(
                         new Substitution(1),
                         new SourceName.Identifier("abc")),

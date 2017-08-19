@@ -1,7 +1,12 @@
 ﻿namespace CxxDemangler.Parsers
 {
-    internal class RefQualifier
+    internal class RefQualifier : IParsingResult
     {
+        public RefQualifier(Values value)
+        {
+            Value = value;
+        }
+
         public enum Values
         {
             [DictionaryValue("R", "&")]
@@ -19,10 +24,7 @@
 
             if (DictionaryParser<Values>.Parse(context, out value))
             {
-                return new RefQualifier()
-                {
-                    Value = value,
-                };
+                return new RefQualifier(value);
             }
 
             return null;

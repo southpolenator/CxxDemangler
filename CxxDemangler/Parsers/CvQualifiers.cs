@@ -1,7 +1,14 @@
 ﻿namespace CxxDemangler.Parsers
 {
-    internal class CvQualifiers
+    internal class CvQualifiers : IParsingResult
     {
+        public CvQualifiers(bool restrict = false, bool @volatile = false, bool @const = false)
+        {
+            Restrict = restrict;
+            Volatile = @volatile;
+            Const = @const;
+        }
+
         public bool Restrict { get; private set; }
 
         public bool Volatile { get; private set; }

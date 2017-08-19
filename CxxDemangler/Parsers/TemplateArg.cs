@@ -48,9 +48,9 @@ namespace CxxDemangler.Parsers
 
         internal class ArgPack : IParsingResult
         {
-            private List<IParsingResult> args;
+            private IReadOnlyList<IParsingResult> args;
 
-            public ArgPack(List<IParsingResult> args)
+            public ArgPack(IReadOnlyList<IParsingResult> args)
             {
                 this.args = args;
             }

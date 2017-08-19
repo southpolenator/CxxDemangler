@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <nested-name> ::= N [<CV-qualifiers>] [<ref-qualifier>] <prefix> <unqualified-name> E
+    //               ::= N [<CV-qualifiers>] [<ref-qualifier>] <template-prefix> <template-args> E
     internal class NestedName : IParsingResult
     {
         public NestedName(IParsingResult prefix, CvQualifiers cvQualifiers, RefQualifier refQualifier)
