@@ -57,12 +57,12 @@ namespace CxxDemangler.Parsers
 
         internal class Identifier : IParsingResult
         {
-            private string identifier;
-
-            public Identifier(string identifier)
+            public Identifier(string name)
             {
-                this.identifier = identifier;
+                Name = name;
             }
+
+            public string Name { get; private set; }
         }
     }
 }
