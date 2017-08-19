@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CxxDemangler.Parsers
+﻿namespace CxxDemangler.Parsers
 {
+    // <unscoped-template-name> ::= <unscoped-name>
+    //                          ::= <substitution>
     internal class UnscopedTemplateName
     {
         public static IParsingResult Parse(ParsingContext context)
