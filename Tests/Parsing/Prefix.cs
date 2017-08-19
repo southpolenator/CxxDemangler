@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CxxDemangler.Tests
+namespace CxxDemangler.Tests.Parsing
 {
     [TestClass]
     public class Prefix : TestBase

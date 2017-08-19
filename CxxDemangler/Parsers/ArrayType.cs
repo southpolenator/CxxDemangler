@@ -47,10 +47,13 @@ namespace CxxDemangler.Parsers
                 return null;
             }
 
-            type = Type.Parse(context);
-            if (type != null)
+            if (context.Parser.VerifyString("_"))
             {
-                return new NoDimension(type);
+                type = Type.Parse(context);
+                if (type != null)
+                {
+                    return new NoDimension(type);
+                }
             }
 
             context.Rewind(rewind);

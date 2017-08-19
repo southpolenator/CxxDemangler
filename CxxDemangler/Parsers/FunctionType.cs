@@ -2,6 +2,15 @@
 {
     internal class FunctionType : IParsingResult
     {
+        public FunctionType(BareFunctionType bareType, CvQualifiers cvQualifiers, RefQualifier refQualifier, bool transactionSafe, bool externC)
+        {
+            CvQualifiers = cvQualifiers;
+            TransactionSafe = transactionSafe;
+            ExternC = externC;
+            BareType = bareType;
+            RefQualifier = refQualifier;
+        }
+
         public CvQualifiers CvQualifiers { get; private set; }
 
         public bool TransactionSafe { get; private set; }
@@ -29,14 +38,7 @@
 
                     if (context.Parser.VerifyString("E"))
                     {
-                        return new FunctionType()
-                        {
-                            CvQualifiers = cvQualifiers,
-                            TransactionSafe = transactionSafe,
-                            ExternC = externC,
-                            BareType = bareType,
-                            RefQualifier = refQualifier,
-                        };
+                        return new FunctionType(bareType, cvQualifiers, refQualifier, transactionSafe, externC);
                     }
                 }
             }

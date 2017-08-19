@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +37,7 @@ namespace CxxDemangler.Tests
                 return;
             }
 
-            Type type = expected.GetType();
+            System.Type type = expected.GetType();
 
             if (typeof(IParsingResult).IsAssignableFrom(type))
             {

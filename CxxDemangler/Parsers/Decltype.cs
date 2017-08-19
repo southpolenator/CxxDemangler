@@ -14,12 +14,12 @@
 
         public static IParsingResult Parse(ParsingContext context)
         {
+            RewindState rewind = context.RewindState;
+
             if (!context.Parser.VerifyString("D"))
             {
                 return null;
             }
-
-            RewindState rewind = context.RewindState;
 
             if (context.Parser.VerifyString("t"))
             {

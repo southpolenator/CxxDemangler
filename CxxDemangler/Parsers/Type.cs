@@ -1,5 +1,14 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    //  <type> ::= <builtin-type>
+    //         ::= <function-type>
+    //         ::= <class-enum-type>
+    //         ::= <array-type>
+    //         ::= <pointer-to-member-type>
+    //         ::= <template-param>
+    //         ::= <template-template-param> <template-args>
+    //         ::= <decltype>
+    //         ::= <substitution>
     internal class Type
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -50,15 +59,15 @@
             type = TemplateTemplateParam.Parse(context);
             if (type != null)
             {
-                IParsingResult args = TemplateArgs.Parse(context);
+                IParsingResult arguments = TemplateArgs.Parse(context);
 
-                if (args == null)
+                if (arguments == null)
                 {
                     context.Rewind(rewind);
                     return null;
                 }
 
-                return AddToSubstitutionTable(context, new TemplateTemplate(type, args));
+                return AddToSubstitutionTable(context, new TemplateTemplate(type, arguments));
             }
 
             type = Decltype.Parse(context);
@@ -82,7 +91,7 @@
                 {
                     return new QualifiedBuiltin(qualifiers, type);
                 }
-                return AddToSubstitutionTable(context, type);
+                return AddToSubstitutionTable(context, new Qualified(qualifiers, type));
             }
 
             if (context.Parser.VerifyString("P"))
@@ -150,10 +159,10 @@
                     return null;
                 }
 
-                IParsingResult args = TemplateArgs.Parse(context);
+                IParsingResult arguments = TemplateArgs.Parse(context);
 
                 type = Parse(context);
-                return AddToSubstitutionTable(context, new VendorExtension(name, args, type));
+                return AddToSubstitutionTable(context, new VendorExtension(name, arguments, type));
             }
 
             if (context.Parser.VerifyString("Dp"))
@@ -178,100 +187,112 @@
 
         internal class Complex : IParsingResult
         {
-            private IParsingResult type;
-
             public Complex(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class Imaginary : IParsingResult
         {
-            private IParsingResult type;
-
             public Imaginary(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class LvalueRef : IParsingResult
         {
-            private IParsingResult type;
-
             public LvalueRef(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class PackExtension : IParsingResult
         {
-            private IParsingResult type;
-
             public PackExtension(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class PointerTo : IParsingResult
         {
-            private IParsingResult type;
-
             public PointerTo(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
-        }
 
-        internal class QualifiedBuiltin : IParsingResult
-        {
-            private CvQualifiers qualifiers;
-            private IParsingResult type;
-
-            public QualifiedBuiltin(CvQualifiers qualifiers, IParsingResult type)
-            {
-                this.qualifiers = qualifiers;
-                this.type = type;
-            }
+            public IParsingResult Type { get; private set; }
         }
 
         internal class RvalueRef : IParsingResult
         {
-            private IParsingResult type;
-
             public RvalueRef(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
+        }
+
+        internal class QualifiedBuiltin : IParsingResult
+        {
+            public QualifiedBuiltin(CvQualifiers qualifiers, IParsingResult type)
+            {
+                CvQualifiers = qualifiers;
+                Type = type;
+            }
+
+            public CvQualifiers CvQualifiers { get; private set; }
+            public IParsingResult Type { get; private set; }
+        }
+
+        internal class Qualified : IParsingResult
+        {
+            public Qualified(CvQualifiers qualifiers, IParsingResult type)
+            {
+                CvQualifiers = qualifiers;
+                Type = type;
+            }
+
+            public CvQualifiers CvQualifiers { get; private set; }
+            public IParsingResult Type { get; private set; }
         }
 
         internal class TemplateTemplate : IParsingResult
         {
-            private IParsingResult args;
-            private IParsingResult type;
-
-            public TemplateTemplate(IParsingResult type, IParsingResult args)
+            public TemplateTemplate(IParsingResult type, IParsingResult arguments)
             {
-                this.type = type;
-                this.args = args;
+                Type = type;
+                Arguments = arguments;
             }
+
+            public IParsingResult Arguments { get; private set; }
+            public IParsingResult Type { get; private set; }
         }
 
         internal class VendorExtension : IParsingResult
         {
-            private IParsingResult args;
-            private IParsingResult name;
-            private IParsingResult type;
-
-            public VendorExtension(IParsingResult name, IParsingResult args, IParsingResult type)
+            public VendorExtension(IParsingResult name, IParsingResult arguments, IParsingResult type)
             {
-                this.name = name;
-                this.args = args;
-                this.type = type;
+                Name = name;
+                Arguments = arguments;
+                Type = type;
             }
+
+            public IParsingResult Arguments { get; private set; }
+            public IParsingResult Name { get; private set; }
+            public IParsingResult Type { get; private set; }
         }
     }
 }

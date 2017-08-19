@@ -2,6 +2,12 @@
 {
     internal class PointerToMemberType : IParsingResult
     {
+        public PointerToMemberType(IParsingResult type, IParsingResult member)
+        {
+            Type = type;
+            Member = member;
+        }
+
         public IParsingResult Type { get; private set; }
 
         public IParsingResult Member { get; private set; }
@@ -20,11 +26,7 @@
 
                     if (member != null)
                     {
-                        return new PointerToMemberType()
-                        {
-                            Type = type,
-                            Member = member,
-                        };
+                        return new PointerToMemberType(type, member);
                     }
                 }
                 context.Rewind(rewind);

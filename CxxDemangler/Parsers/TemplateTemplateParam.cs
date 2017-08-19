@@ -2,7 +2,12 @@
 {
     internal class TemplateTemplateParam : IParsingResult
     {
-        public IParsingResult Param { get; private set; }
+        public TemplateTemplateParam(IParsingResult parameter)
+        {
+            Parameter = parameter;
+        }
+
+        public IParsingResult Parameter { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
         {
@@ -13,14 +18,11 @@
                 return substitution;
             }
 
-            IParsingResult param = TemplateParam.Parse(context);
+            IParsingResult parameter = TemplateParam.Parse(context);
 
-            if (param != null)
+            if (parameter != null)
             {
-                IParsingResult result = new TemplateTemplateParam()
-                {
-                    Param = param,
-                };
+                IParsingResult result = new TemplateTemplateParam(parameter);
                 // TODO: context.SubstitutionTable.Add(result);
                 return result;
             }
