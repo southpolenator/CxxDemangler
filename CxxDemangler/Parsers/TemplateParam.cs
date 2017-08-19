@@ -2,6 +2,11 @@
 {
     internal class TemplateParam : IParsingResult
     {
+        public TemplateParam(int number)
+        {
+            Number = number;
+        }
+
         public int Number { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
@@ -19,10 +24,7 @@
                 number++;
                 if (context.Parser.VerifyString("_"))
                 {
-                    return new TemplateParam()
-                    {
-                        Number = number,
-                    };
+                    return new TemplateParam(number);
                 }
                 context.Rewind(rewind);
             }

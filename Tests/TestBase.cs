@@ -17,15 +17,16 @@ namespace CxxDemangler.Tests
             return Parse(context);
         }
 
-        internal void Verify(string input, IParsingResult expected)
+        internal void Verify(string input, IParsingResult expected, string endsWith = "...")
         {
             ParsingContext context = CxxDemangler.CreateContext(input);
             IParsingResult actual = Parse(context);
 
             CompareParsingResult(expected, actual);
-            if (input.EndsWith("..."))
+            Assert.IsTrue(string.IsNullOrEmpty(endsWith) || input.EndsWith(endsWith));
+            if (!string.IsNullOrEmpty(endsWith))
             {
-                Assert.AreEqual(input.Length - 3, context.Parser.Position, "Not everything was parsed");
+                Assert.AreEqual(input.Length - endsWith.Length, context.Parser.Position, "Not everything was parsed");
             }
         }
 

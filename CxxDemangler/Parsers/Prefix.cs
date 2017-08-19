@@ -2,6 +2,13 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <prefix> ::= <unqualified-name>
+    //          ::= <prefix> <unqualified-name>
+    //          ::= <template-prefix> <template-args>
+    //          ::= <template-param>
+    //          ::= <decltype>
+    //          ::= <prefix> <data-member-prefix>
+    //          ::= <substitution>
     internal class Prefix
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -154,14 +161,14 @@ namespace CxxDemangler.Parsers
 
         internal class DataMember : IParsingResult
         {
-            private IParsingResult name;
-            private IParsingResult result;
-
-            public DataMember(IParsingResult result, IParsingResult name)
+            public DataMember(IParsingResult name, IParsingResult member)
             {
-                this.result = result;
-                this.name = name;
+                Name = name;
+                Member = member;
             }
+
+            public IParsingResult Member { get; private set; }
+            public IParsingResult Name { get; private set; }
         }
 
         internal class NestedName : IParsingResult
@@ -179,14 +186,14 @@ namespace CxxDemangler.Parsers
 
         internal class Template : IParsingResult
         {
-            private IParsingResult args;
-            private IParsingResult result;
-
-            public Template(IParsingResult result, IParsingResult args)
+            public Template(IParsingResult name, IParsingResult arguments)
             {
-                this.result = result;
-                this.args = args;
+                Name = name;
+                Arguments = arguments;
             }
+
+            public IParsingResult Arguments { get; private set; }
+            public IParsingResult Name { get; private set; }
         }
     }
 }

@@ -2,6 +2,12 @@
 {
     internal class Decltype : IParsingResult
     {
+        public Decltype(IParsingResult expression, bool idExpression)
+        {
+            Expression = expression;
+            IdExpression = idExpression;
+        }
+
         public bool IdExpression { get; private set; }
 
         public IParsingResult Expression { get; private set; }
@@ -25,11 +31,7 @@
                     return null;
                 }
 
-                return new Decltype()
-                {
-                    Expression = expression,
-                    IdExpression = true,
-                };
+                return new Decltype(expression, idExpression: true);
             }
 
             if (context.Parser.VerifyString("T"))
@@ -42,11 +44,7 @@
                     return null;
                 }
 
-                return new Decltype()
-                {
-                    Expression = expression,
-                    IdExpression = false,
-                };
+                return new Decltype(expression, idExpression: false);
             }
 
             context.Rewind(rewind);

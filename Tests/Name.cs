@@ -11,7 +11,7 @@ namespace CxxDemangler.Tests
         {
             Verify("NS0_3abcE...",
                 new Parsers.NestedName(
-                    new Prefix.NestedName(
+                    new Parsers.Prefix.NestedName(
                         new Substitution(1),
                         new SourceName.Identifier("abc")),
                     null,

@@ -11,7 +11,7 @@ namespace CxxDemangler.Tests
         {
             Verify("NKOS_3abcE...",
                 new Parsers.NestedName(
-                    new Prefix.NestedName(
+                    new Parsers.Prefix.NestedName(
                         new Substitution(0),
                         new SourceName.Identifier("abc")),
                     new CvQualifiers(@const: true),
@@ -23,7 +23,7 @@ namespace CxxDemangler.Tests
         {
             Verify("NOS_3abcE...",
                 new Parsers.NestedName(
-                    new Prefix.NestedName(
+                    new Parsers.Prefix.NestedName(
                         new Substitution(0),
                         new SourceName.Identifier("abc")),
                     null,
@@ -35,7 +35,7 @@ namespace CxxDemangler.Tests
         {
             Verify("NS_3abcE...",
                 new Parsers.NestedName(
-                    new Prefix.NestedName(
+                    new Parsers.Prefix.NestedName(
                         new Substitution(0),
                         new SourceName.Identifier("abc")),
                     null,
@@ -47,8 +47,8 @@ namespace CxxDemangler.Tests
         {
             Verify("NKOS_3abcIJEEE...",
                 new Parsers.NestedName(
-                    new Prefix.Template(
-                        new Prefix.NestedName(
+                    new Parsers.Prefix.Template(
+                        new Parsers.Prefix.NestedName(
                             new Substitution(0),
                             new SourceName.Identifier("abc")),
                         new TemplateArgs(
@@ -68,8 +68,8 @@ namespace CxxDemangler.Tests
         {
             Verify("NOS_3abcIJEEE...",
                 new Parsers.NestedName(
-                    new Prefix.Template(
-                        new Prefix.NestedName(
+                    new Parsers.Prefix.Template(
+                        new Parsers.Prefix.NestedName(
                             new Substitution(0),
                             new SourceName.Identifier("abc")),
                         new TemplateArgs(
@@ -89,8 +89,8 @@ namespace CxxDemangler.Tests
         {
             Verify("NS_3abcIJEEE...",
                 new Parsers.NestedName(
-                    new Prefix.Template(
-                        new Prefix.NestedName(
+                    new Parsers.Prefix.Template(
+                        new Parsers.Prefix.NestedName(
                             new Substitution(0),
                             new SourceName.Identifier("abc")),
                         new TemplateArgs(
