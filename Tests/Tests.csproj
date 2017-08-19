@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 
     <AssemblyName>CxxDemangler.Tests</AssemblyName>
   </PropertyGroup>
