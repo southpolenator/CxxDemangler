@@ -2,6 +2,11 @@
 {
     internal class Substitution : IParsingResult
     {
+        public Substitution(int reference)
+        {
+            Reference = reference;
+        }
+
         public int Reference { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
@@ -35,10 +40,7 @@
                 return null;
             }
 
-            return new Substitution()
-            {
-                Reference = number,
-            };
+            return new Substitution(number);
         }
     }
 }

@@ -4,6 +4,11 @@ namespace CxxDemangler.Parsers
 {
     internal class TemplateArgs : IParsingResult
     {
+        public TemplateArgs(IReadOnlyList<IParsingResult> arguments)
+        {
+            Arguments = arguments;
+        }
+
         public IReadOnlyList<IParsingResult> Arguments { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
@@ -16,10 +21,7 @@ namespace CxxDemangler.Parsers
 
                 if (args.Count > 0 && context.Parser.VerifyString("E"))
                 {
-                    return new TemplateArgs()
-                    {
-                        Arguments = args,
-                    };
+                    return new TemplateArgs(args);
                 }
                 context.Rewind(rewind);
             }

@@ -1,5 +1,9 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <name> ::= <nested-name>
+    //        ::= <unscoped-name>
+    //        ::= <unscoped-template-name> <template-args>
+    //        ::= <local-name>
     internal class Name
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -23,7 +27,6 @@
                     if (args == null)
                     {
                         context.Rewind(rewind);
-                        // TODO: Remove all table elements (Rewind should do it)
                         return null;
                     }
 

@@ -31,7 +31,7 @@ namespace CxxDemangler.Tests
 
         protected static void CompareParsingResult(object expected, object actual, string path = "")
         {
-            Assert.AreEqual(expected == null, actual == null, $"Different null tests at:\n{path}");
+            Assert.AreEqual(expected == null, actual == null, $"Different null tests at: {path}");
             if (expected == null && actual == null)
             {
                 return;
@@ -41,10 +41,14 @@ namespace CxxDemangler.Tests
 
             if (typeof(IParsingResult).IsAssignableFrom(type))
             {
-                Assert.AreEqual(expected.GetType(), actual.GetType(), $"Different types at:\n{path}");
-                foreach (PropertyInfo property in type.GetProperties())
+                Assert.AreEqual(expected.GetType(), actual.GetType(), $"Different types at: {path}");
+                foreach (PropertyInfo property in type.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public))
                 {
                     CompareParsingResult(property.GetValue(expected), property.GetValue(actual), $"{path}\n{type.FullName}.{property.Name}");
+                }
+                foreach (FieldInfo field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public))
+                {
+                    CompareParsingResult(field.GetValue(expected), field.GetValue(actual), $"{path}\n{type.FullName}.{field.Name}");
                 }
             }
             else if (typeof(IEnumerable<IParsingResult>).IsAssignableFrom(type))
@@ -52,7 +56,7 @@ namespace CxxDemangler.Tests
                 IParsingResult[] expectedArray = ((IEnumerable<IParsingResult>)expected).ToArray();
                 IParsingResult[] actualArray = ((IEnumerable<IParsingResult>)actual).ToArray();
 
-                Assert.AreEqual(expectedArray.Length, actualArray.Length, $"Different lengths at:\n{path}");
+                Assert.AreEqual(expectedArray.Length, actualArray.Length, $"Different lengths at: {path}");
                 for (int i = 0; i < expectedArray.Length; i++)
                 {
                     CompareParsingResult(expectedArray[i], actualArray[i], $"{path}[{i}]");
@@ -60,7 +64,7 @@ namespace CxxDemangler.Tests
             }
             else
             {
-                Assert.AreEqual(expected, actual, $"Different values at:\n{path}");
+                Assert.AreEqual(expected, actual, $"Different values at: {path}");
             }
         }
     }

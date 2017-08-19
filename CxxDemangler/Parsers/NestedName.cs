@@ -2,6 +2,13 @@
 {
     internal class NestedName : IParsingResult
     {
+        public NestedName(IParsingResult prefix, CvQualifiers cvQualifiers, RefQualifier refQualifier)
+        {
+            Prefix = prefix;
+            CvQualifiers = cvQualifiers;
+            RefQualifier = refQualifier;
+        }
+
         public IParsingResult Prefix { get; private set; }
 
         public CvQualifiers CvQualifiers { get; private set; }
@@ -33,12 +40,7 @@
                 return null;
             }
 
-            return new NestedName()
-            {
-                Prefix = prefix,
-                CvQualifiers = cvQualifiers,
-                RefQualifier = refQualifier,
-            };
+            return new NestedName(prefix, cvQualifiers, refQualifier);
         }
     }
 }

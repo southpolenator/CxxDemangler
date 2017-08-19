@@ -2,6 +2,11 @@
 {
     internal class SimpleOperatorName : IParsingResult
     {
+        public SimpleOperatorName(Values value)
+        {
+            Value = value;
+        }
+
         public Values Value { get; private set; }
 
         public enum Values
@@ -154,10 +159,7 @@
 
             if (DictionaryParser<Values>.Parse(context, out value))
             {
-                return new SimpleOperatorName()
-                {
-                    Value = value,
-                };
+                return new SimpleOperatorName(value);
             }
 
             return null;
