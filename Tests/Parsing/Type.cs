@@ -24,7 +24,7 @@ namespace CxxDemangler.Tests.Parsing
         public void TypeFunction()
         {
             Verify("FS_E...",
-                new FunctionType(
+                new Parsers.FunctionType(
                     new BareFunctionType(
                         new[]
                         {

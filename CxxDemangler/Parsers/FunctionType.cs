@@ -1,5 +1,6 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <function-type> ::= [<CV-qualifiers>] [Dx] F [Y] <bare-function-type> [<ref-qualifier>] E
     internal class FunctionType : IParsingResult
     {
         public FunctionType(BareFunctionType bareType, CvQualifiers cvQualifiers, RefQualifier refQualifier, bool transactionSafe, bool externC)
