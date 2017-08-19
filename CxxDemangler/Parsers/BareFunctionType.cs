@@ -4,6 +4,11 @@ namespace CxxDemangler.Parsers
 {
     internal class BareFunctionType : IParsingResult
     {
+        public BareFunctionType(IReadOnlyList<IParsingResult> types)
+        {
+            Types = types;
+        }
+
         public IReadOnlyList<IParsingResult> Types { get; private set; }
 
         public static BareFunctionType Parse(ParsingContext context)
@@ -12,10 +17,7 @@ namespace CxxDemangler.Parsers
 
             if (types.Count > 0)
             {
-                return new BareFunctionType()
-                {
-                    Types = types,
-                };
+                return new BareFunctionType(types);
             }
 
             return null;

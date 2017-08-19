@@ -1,5 +1,8 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <encoding> ::= <function name> <bare-function-type>
+    //            ::= <data name>
+    //            ::= <special-name>
     internal class Encoding
     {
         public static IParsingResult Parse(ParsingContext context)

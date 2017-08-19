@@ -95,6 +95,11 @@
             Nullptr,
         }
 
+        public StandardBuiltinType(Values value)
+        {
+            Value = value;
+        }
+
         public Values Value { get; private set; }
 
         public new static StandardBuiltinType Parse(ParsingContext context)
@@ -103,10 +108,7 @@
 
             if (DictionaryParser<Values>.Parse(context, out value))
             {
-                return new StandardBuiltinType()
-                {
-                    Value = value,
-                };
+                return new StandardBuiltinType(value);
             }
 
             return null;
