@@ -2,6 +2,11 @@
 {
     internal class DestructorName : IParsingResult
     {
+        public DestructorName(IParsingResult name)
+        {
+            Name = name;
+        }
+
         public IParsingResult Name { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
@@ -10,10 +15,7 @@
 
             if (name != null)
             {
-                return new DestructorName()
-                {
-                    Name = name,
-                };
+                return new DestructorName(name);
             }
             return null;
         }

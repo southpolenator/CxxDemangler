@@ -1,5 +1,10 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    //  <base-unresolved-name> ::= <simple-id>                                # unresolved name
+    //                         ::= on <operator-name>                         # unresolved operator-function-id
+    //                         ::= on <operator-name> <template-args>         # unresolved operator template-id
+    //                         ::= dn <destructor-name>                       # destructor or pseudo-destructor;
+    //                                                                        # e.g. ~X or ~X<N-1>
     internal class BaseUnresolvedName
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -33,14 +38,15 @@
 
         internal class Operator : IParsingResult
         {
-            private IParsingResult arguments;
-            private IParsingResult operatorName;
-
             public Operator(IParsingResult operatorName, IParsingResult arguments)
             {
-                this.operatorName = operatorName;
-                this.arguments = arguments;
+                OperatorName = operatorName;
+                Arguments = arguments;
             }
+
+            public IParsingResult Arguments { get; private set; }
+
+            public IParsingResult OperatorName { get; private set; }
         }
     }
 }
