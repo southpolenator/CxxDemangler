@@ -2,6 +2,10 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <template-arg> ::= <type>                  # type or template
+    //                ::= X<expression> E         # expression
+    //                ::= <expr-primary>          # simple expressions
+    //                ::= J<template-arg>* E      # argument pack
     internal class TemplateArg
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -34,11 +38,11 @@ namespace CxxDemangler.Parsers
 
             if (context.Parser.VerifyString("J"))
             {
-                List<IParsingResult> args = CxxDemangler.ParseList(TemplateArg.Parse, context);
+                List<IParsingResult> arguments = CxxDemangler.ParseList(TemplateArg.Parse, context);
 
                 if (context.Parser.VerifyString("E"))
                 {
-                    return new ArgPack(args);
+                    return new ArgPack(arguments);
                 }
                 context.Rewind(rewind);
                 return null;
@@ -48,12 +52,12 @@ namespace CxxDemangler.Parsers
 
         internal class ArgPack : IParsingResult
         {
-            private IReadOnlyList<IParsingResult> args;
-
-            public ArgPack(IReadOnlyList<IParsingResult> args)
+            public ArgPack(IReadOnlyList<IParsingResult> arguments)
             {
-                this.args = args;
+                Arguments = arguments;
             }
+
+            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
         }
     }
 }

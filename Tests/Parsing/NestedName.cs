@@ -1,5 +1,4 @@
-﻿using CxxDemangler.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -12,10 +11,10 @@ namespace CxxDemangler.Tests.Parsing
             Verify("NKOS_3abcE...",
                 new Parsers.NestedName(
                     new Parsers.Prefix.NestedName(
-                        new Substitution(0),
-                        new SourceName.Identifier("abc")),
-                    new CvQualifiers(@const: true),
-                    new RefQualifier(RefQualifier.Values.RValueRef)));
+                        new Parsers.Substitution(0),
+                        new Parsers.SourceName.Identifier("abc")),
+                    new Parsers.CvQualifiers(@const: true),
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.RValueRef)));
         }
 
         [TestMethod]
@@ -24,10 +23,10 @@ namespace CxxDemangler.Tests.Parsing
             Verify("NOS_3abcE...",
                 new Parsers.NestedName(
                     new Parsers.Prefix.NestedName(
-                        new Substitution(0),
-                        new SourceName.Identifier("abc")),
+                        new Parsers.Substitution(0),
+                        new Parsers.SourceName.Identifier("abc")),
                     null,
-                    new RefQualifier(RefQualifier.Values.RValueRef)));
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.RValueRef)));
         }
 
         [TestMethod]
@@ -36,8 +35,8 @@ namespace CxxDemangler.Tests.Parsing
             Verify("NS_3abcE...",
                 new Parsers.NestedName(
                     new Parsers.Prefix.NestedName(
-                        new Substitution(0),
-                        new SourceName.Identifier("abc")),
+                        new Parsers.Substitution(0),
+                        new Parsers.SourceName.Identifier("abc")),
                     null,
                     null));
         }
@@ -49,18 +48,18 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.NestedName(
                     new Parsers.Prefix.Template(
                         new Parsers.Prefix.NestedName(
-                            new Substitution(0),
-                            new SourceName.Identifier("abc")),
+                            new Parsers.Substitution(0),
+                            new Parsers.SourceName.Identifier("abc")),
                         new Parsers.TemplateArgs(
                             new IParsingResult[]
                             {
-                                new TemplateArg.ArgPack(
+                                new Parsers.TemplateArg.ArgPack(
                                     new IParsingResult[]
                                     {
                                     }),
                             })),
-                    new CvQualifiers(@const: true),
-                    new RefQualifier(RefQualifier.Values.RValueRef)));
+                    new Parsers.CvQualifiers(@const: true),
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.RValueRef)));
         }
 
         [TestMethod]
@@ -70,18 +69,18 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.NestedName(
                     new Parsers.Prefix.Template(
                         new Parsers.Prefix.NestedName(
-                            new Substitution(0),
-                            new SourceName.Identifier("abc")),
+                            new Parsers.Substitution(0),
+                            new Parsers.SourceName.Identifier("abc")),
                         new Parsers.TemplateArgs(
                             new IParsingResult[]
                             {
-                                new TemplateArg.ArgPack(
+                                new Parsers.TemplateArg.ArgPack(
                                     new IParsingResult[]
                                     {
                                     }),
                             })),
                     null,
-                    new RefQualifier(RefQualifier.Values.RValueRef)));
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.RValueRef)));
         }
 
         [TestMethod]
@@ -91,12 +90,12 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.NestedName(
                     new Parsers.Prefix.Template(
                         new Parsers.Prefix.NestedName(
-                            new Substitution(0),
-                            new SourceName.Identifier("abc")),
+                            new Parsers.Substitution(0),
+                            new Parsers.SourceName.Identifier("abc")),
                         new Parsers.TemplateArgs(
                             new IParsingResult[]
                             {
-                                new TemplateArg.ArgPack(
+                                new Parsers.TemplateArg.ArgPack(
                                     new IParsingResult[]
                                     {
                                     }),
