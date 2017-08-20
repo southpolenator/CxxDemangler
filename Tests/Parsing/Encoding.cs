@@ -12,7 +12,7 @@ namespace CxxDemangler.Tests.Parsing
             Verify("3fooi...",
                 new Parsers.Encoding.Function(
                     new SourceName.Identifier("foo"),
-                    new BareFunctionType(
+                    new Parsers.BareFunctionType(
                         new[]
                         {
                             new StandardBuiltinType(StandardBuiltinType.Values.Int),

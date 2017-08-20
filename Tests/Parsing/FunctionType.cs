@@ -11,7 +11,7 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("KDxFYS_RE...",
                 new Parsers.FunctionType(
-                    new BareFunctionType(
+                    new Parsers.BareFunctionType(
                         new[]
                         {
                             new Substitution(0)
@@ -27,7 +27,7 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("DxFYS_RE...",
                 new Parsers.FunctionType(
-                    new BareFunctionType(
+                    new Parsers.BareFunctionType(
                         new[]
                         {
                             new Substitution(0)
@@ -43,7 +43,7 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("FYS_RE...",
                 new Parsers.FunctionType(
-                    new BareFunctionType(
+                    new Parsers.BareFunctionType(
                         new[]
                         {
                             new Substitution(0)
@@ -59,7 +59,7 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("FS_RE...",
                 new Parsers.FunctionType(
-                    new BareFunctionType(
+                    new Parsers.BareFunctionType(
                         new[]
                         {
                             new Substitution(0)
@@ -75,7 +75,7 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("FS_E...",
                 new Parsers.FunctionType(
-                    new BareFunctionType(
+                    new Parsers.BareFunctionType(
                         new[]
                         {
                             new Substitution(0)
