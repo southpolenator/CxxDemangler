@@ -37,16 +37,11 @@ namespace CxxDemangler.Tests.Parsing
         }
 
         [TestMethod]
-        public void BareFunctionTypeFailures()
+        public void ClassEnumTypeFailures()
         {
-            Assert.IsNull(Parse("Dtrtz"));
-            Assert.IsNull(Parse("DTrtz"));
-            Assert.IsNull(Parse("Dz"));
-            Assert.IsNull(Parse("Dtrt"));
-            Assert.IsNull(Parse("DTrt"));
-            Assert.IsNull(Parse("Dt"));
-            Assert.IsNull(Parse("DT"));
-            Assert.IsNull(Parse("D"));
+            Assert.IsNull(Parse("zzz"));
+            Assert.IsNull(Parse("Tzzz"));
+            Assert.IsNull(Parse("T"));
             Assert.IsNull(Parse(""));
         }
 

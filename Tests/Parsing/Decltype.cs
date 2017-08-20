@@ -24,7 +24,7 @@ namespace CxxDemangler.Tests.Parsing
         }
 
         [TestMethod]
-        public void BareFunctionTypeFailures()
+        public void DecltypeFailures()
         {
             Assert.IsNull(Parse("Dtrtz"));
             Assert.IsNull(Parse("DTrtz"));

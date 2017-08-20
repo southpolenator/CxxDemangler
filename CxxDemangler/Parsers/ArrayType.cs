@@ -2,6 +2,8 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <array-type> ::= A <positive dimension number> _ <element type>
+    //              ::= A[< dimension expression >] _<element type>
     internal class ArrayType
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -62,36 +64,36 @@ namespace CxxDemangler.Parsers
 
         internal class DimensionExpression : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult type;
-
             public DimensionExpression(IParsingResult expression, IParsingResult type)
             {
-                this.expression = expression;
-                this.type = type;
+                Expression = expression;
+                Type = type;
             }
+
+            public IParsingResult Expression { get; private set; }
+            public IParsingResult Type { get; private set; }
         }
 
         internal class DimensionNumber : IParsingResult
         {
-            private int number;
-            private IParsingResult type;
-
             public DimensionNumber(int number, IParsingResult type)
             {
-                this.number = number;
-                this.type = type;
+                Number = number;
+                Type = type;
             }
+
+            public int Number { get; private set; }
+            public IParsingResult Type { get; private set; }
         }
 
         internal class NoDimension : IParsingResult
         {
-            private IParsingResult type;
-
             public NoDimension(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
     }
 }

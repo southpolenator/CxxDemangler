@@ -40,7 +40,7 @@ namespace CxxDemangler.Tests.Parsing
         public void TypeArray()
         {
             Verify("A_S_...",
-                new ArrayType.NoDimension(
+                new Parsers.ArrayType.NoDimension(
                     new Substitution(0)));
         }
 
