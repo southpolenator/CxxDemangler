@@ -78,7 +78,7 @@ namespace CxxDemangler.Tests.Parsing
         public void TypeDecltype()
         {
             Verify("DTtrE...",
-                new Decltype(
+                new Parsers.Decltype(
                     new Expression.Retrow(),
                     idExpression: false));
         }

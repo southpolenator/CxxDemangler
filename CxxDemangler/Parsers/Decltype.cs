@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <decltype>  ::= Dt <expression> E  # decltype of an id-expression or class member access (C++0x)
+    //             ::= DT<expression> E  # decltype of an expression (C++0x)
     internal class Decltype : IParsingResult
     {
         public Decltype(IParsingResult expression, bool idExpression)
