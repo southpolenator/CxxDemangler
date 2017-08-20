@@ -3,10 +3,10 @@
 namespace CxxDemangler.Tests.Parsing
 {
     [TestClass]
-    public class UnresolvedQualifierLevel : TestBase
+    public class SimpleId : TestBase
     {
         [TestMethod]
-        public void UnresolvedQualifierLevelSimpleId()
+        public void SimpleIdNoArgs()
         {
             Verify("3abc...",
                 new Parsers.SimpleId(
@@ -15,7 +15,7 @@ namespace CxxDemangler.Tests.Parsing
         }
 
         [TestMethod]
-        public void UnresolvedQualifierLevelSimpleIdTemplateArgs()
+        public void SimpleIdTemplateArgs()
         {
             Verify("3abcIS_E...",
                 new Parsers.SimpleId(
@@ -28,7 +28,7 @@ namespace CxxDemangler.Tests.Parsing
         }
 
         [TestMethod]
-        public void UnresolvedQualifierLevelFailures()
+        public void SimpleIdLevelFailures()
         {
             Assert.IsNull(Parse("zzz"));
             Assert.IsNull(Parse(""));
@@ -36,7 +36,7 @@ namespace CxxDemangler.Tests.Parsing
 
         internal override IParsingResult Parse(ParsingContext context)
         {
-            return Parsers.UnresolvedQualifierLevel.Parse(context);
+            return Parsers.SimpleId.Parse(context);
         }
     }
 }
