@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <template-template-param> ::= <template-param>
+    //                           ::= <substitution>
     internal class TemplateTemplateParam : IParsingResult
     {
         public TemplateTemplateParam(IParsingResult parameter)
