@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-solution: CxxDemangler.sln
+#solution: CxxDemangler.sln
 dotnet: 1.1
 dist: trusty
 script:
