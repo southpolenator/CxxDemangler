@@ -1,5 +1,11 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    //<ctor-dtor-name> ::= C1 # complete object constructor
+    //                 ::= C2 # base object constructor
+    //                 ::= C3 # complete object allocating constructor
+    //                 ::= D0 # deleting destructor
+    //                 ::= D1 # complete object destructor
+    //                 ::= D2 # base object destructor
     internal class CtorDtorName : IParsingResult
     {
         public enum Values
