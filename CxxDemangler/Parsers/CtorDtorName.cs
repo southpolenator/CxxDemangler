@@ -29,6 +29,11 @@
             MaybeInChargeDestructor,
         }
 
+        public CtorDtorName(Values value)
+        {
+            Value = value;
+        }
+
         public Values Value { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
@@ -37,10 +42,7 @@
 
             if (DictionaryParser<Values>.Parse(context, out value))
             {
-                return new CtorDtorName()
-                {
-                    Value = value,
-                };
+                return new CtorDtorName(value);
             }
 
             return null;

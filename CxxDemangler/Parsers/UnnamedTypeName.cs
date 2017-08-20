@@ -2,6 +2,11 @@
 {
     internal class UnnamedTypeName : IParsingResult
     {
+        public UnnamedTypeName(int? number)
+        {
+            Number = number;
+        }
+
         public int? Number { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
@@ -14,10 +19,7 @@
 
                 if (context.Parser.VerifyString("_"))
                 {
-                    return new UnnamedTypeName()
-                    {
-                        Number = number,
-                    };
+                    return new UnnamedTypeName(number);
                 }
                 context.Rewind(rewind);
             }

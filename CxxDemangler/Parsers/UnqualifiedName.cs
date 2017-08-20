@@ -1,5 +1,10 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <unqualified-name> ::= <operator-name> [<abi-tags>]
+    //                    ::= <ctor-dtor-name>
+    //                    ::= <source-name>
+    //                    ::= <unnamed-type-name>
+    //                    ::= DC <source-name>+ E      # structured binding declaration
     internal class UnqualifiedName
     {
         public static IParsingResult Parse(ParsingContext context)
