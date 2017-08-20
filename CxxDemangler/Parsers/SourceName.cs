@@ -2,6 +2,7 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <source-name> ::= <positive length number> <identifier>
     internal class SourceName
     {
         public static IParsingResult Parse(ParsingContext context)

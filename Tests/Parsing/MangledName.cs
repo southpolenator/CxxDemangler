@@ -1,4 +1,3 @@
-using CxxDemangler.Parsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CxxDemangler.Tests.Parsing
@@ -10,7 +9,7 @@ namespace CxxDemangler.Tests.Parsing
         public void MangledNameData()
         {
             Verify("_Z3foo...",
-                new SourceName.Identifier("foo"));
+                new Parsers.SourceName.Identifier("foo"));
         }
 
         [TestMethod]
