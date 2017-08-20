@@ -1,5 +1,10 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <function-param> ::= fp <top-level CV-qualifiers> _                             # L == 0, first parameter
+    //          ::= fp <top-level CV-qualifiers> <parameter-2 non-negative number> _   # L == 0, second and later parameters
+    //          ::= fL <L-1 non-negative number> p <top-level CV-qualifiers> _         # L > 0, first parameter
+    //          ::= fL <L-1 non-negative number> p <top-level CV-qualifiers>
+    //                                           <parameter-2 non-negative number> _   # L > 0, second and later parameters
     internal class FunctionParam : IParsingResult
     {
         public FunctionParam(CvQualifiers cvQualifiers, int scope, int? param)
