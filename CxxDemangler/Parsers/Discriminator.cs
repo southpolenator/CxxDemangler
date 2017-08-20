@@ -2,6 +2,8 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <discriminator> := _ <non-negative number>      # when number < 10
+    //                 := __ <non-negative number> _   # when number >= 10
     internal class Discriminator : IParsingResult
     {
         public Discriminator(int number)
