@@ -1,5 +1,8 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <unresolved-type> ::= <template-param> [ <template-args> ]            # T:: or T<X,Y>::
+    //                   ::= <decltype>                                      # decltype(p)::
+    //                   ::= <substitution>
     internal class UnresolvedType
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -28,14 +31,15 @@
 
         internal class Template : IParsingResult
         {
-            private IParsingResult args;
-            private IParsingResult param;
-
-            public Template(IParsingResult param, IParsingResult args)
+            public Template(IParsingResult parameter, IParsingResult arguments)
             {
-                this.param = param;
-                this.args = args;
+                Parameter = parameter;
+                Arguments = arguments;
             }
+
+            public IParsingResult Arguments;
+
+            public IParsingResult Parameter;
         }
     }
 }
