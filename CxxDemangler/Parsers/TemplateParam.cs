@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <template-param> ::= T_	# first template parameter
+    //                  ::= T <parameter-2 non-negative number> _
     internal class TemplateParam : IParsingResult
     {
         public TemplateParam(int number)
