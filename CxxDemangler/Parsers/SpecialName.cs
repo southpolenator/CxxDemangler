@@ -1,5 +1,9 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <special-name> ::= TV <type>	# virtual table
+    //        ::= TT <type>	# VTT structure (construction vtable index)
+    //        ::= TI <type>	# typeinfo structure
+    //        ::= TS <type>	# typeinfo name (null-terminated byte string)
     internal class SpecialName
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -124,90 +128,93 @@
 
         internal class VirtualTable : IParsingResult
         {
-            private IParsingResult type;
-
             public VirtualTable(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class Vtt : IParsingResult
         {
-            private IParsingResult type;
-
             public Vtt(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class TypeInfo : IParsingResult
         {
-            private IParsingResult type;
-
             public TypeInfo(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class TypeInfoName : IParsingResult
         {
-            private IParsingResult type;
-
             public TypeInfoName(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class VirtualOverrideThunkCovariant : IParsingResult
         {
-            private IParsingResult encoding;
-            private IParsingResult resultOffset;
-            private IParsingResult thisOffset;
-
             public VirtualOverrideThunkCovariant(IParsingResult thisOffset, IParsingResult resultOffset, IParsingResult encoding)
             {
-                this.thisOffset = thisOffset;
-                this.resultOffset = resultOffset;
-                this.encoding = encoding;
+                ThisOffset = thisOffset;
+                ResultOffset = resultOffset;
+                Encoding = encoding;
             }
+
+            public IParsingResult Encoding { get; private set; }
+
+            public IParsingResult ResultOffset { get; private set; }
+
+            public IParsingResult ThisOffset { get; private set; }
         }
 
         internal class Guard : IParsingResult
         {
-            private IParsingResult name;
-
             public Guard(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class GuardTemporary : IParsingResult
         {
-            private int index;
-            private IParsingResult name;
-
             public GuardTemporary(IParsingResult name, int index)
             {
-                this.name = name;
-                this.index = index;
+                Name = name;
+                Index = index;
             }
+
+            public int Index { get; private set; }
+            public IParsingResult Name { get; private set; }
         }
 
         internal class VirtualOverrideThunk : IParsingResult
         {
-            private IParsingResult encoding;
-            private IParsingResult offset;
-
             public VirtualOverrideThunk(IParsingResult offset, IParsingResult encoding)
             {
-                this.offset = offset;
-                this.encoding = encoding;
+                Offset = offset;
+                Encoding = encoding;
             }
+
+            public IParsingResult Encoding { get; private set; }
+
+            public IParsingResult Offset { get; private set; }
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using CxxDemangler.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -11,11 +10,11 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("3fooi...",
                 new Parsers.Encoding.Function(
-                    new SourceName.Identifier("foo"),
+                    new Parsers.SourceName.Identifier("foo"),
                     new Parsers.BareFunctionType(
                         new[]
                         {
-                            new StandardBuiltinType(StandardBuiltinType.Values.Int),
+                            new Parsers.StandardBuiltinType(Parsers.StandardBuiltinType.Values.Int),
                         })));
         }
 
@@ -23,15 +22,15 @@ namespace CxxDemangler.Tests.Parsing
         public void EncodingData()
         {
             Verify("3foo...",
-                new SourceName.Identifier("foo"));
+                new Parsers.SourceName.Identifier("foo"));
         }
 
         [TestMethod]
         public void EncodingSpecial()
         {
             Verify("GV3abc...",
-                new SpecialName.Guard(
-                    new SourceName.Identifier("abc")));
+                new Parsers.SpecialName.Guard(
+                    new Parsers.SourceName.Identifier("abc")));
         }
 
         [TestMethod]
