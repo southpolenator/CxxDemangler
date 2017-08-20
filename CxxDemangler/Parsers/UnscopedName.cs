@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <unscoped-name> ::= <unqualified-name>
+    //                 ::= St <unqualified-name>   # ::std::
     internal class UnscopedName
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -16,11 +18,20 @@
                     return null;
                 }
 
-                // TODO: Use std::
-                return name;
+                return new Std(name);
             }
 
             return UnqualifiedName.Parse(context);
+        }
+
+        internal class Std : IParsingResult
+        {
+            public Std(IParsingResult name)
+            {
+                Name = name;
+            }
+
+            public IParsingResult Name { get; private set; }
         }
     }
 }
