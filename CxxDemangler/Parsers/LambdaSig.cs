@@ -2,6 +2,7 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <lambda-sig> ::= <parameter type>+  # Parameter types or "v" if the lambda has no parameters
     internal class LambdaSig : IParsingResult
     {
         public LambdaSig(IReadOnlyList<IParsingResult> argumentTypes)
