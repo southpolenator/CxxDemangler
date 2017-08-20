@@ -51,7 +51,7 @@ namespace CxxDemangler.Tests.Parsing
                         new Parsers.Prefix.NestedName(
                             new Substitution(0),
                             new SourceName.Identifier("abc")),
-                        new TemplateArgs(
+                        new Parsers.TemplateArgs(
                             new IParsingResult[]
                             {
                                 new TemplateArg.ArgPack(
@@ -72,7 +72,7 @@ namespace CxxDemangler.Tests.Parsing
                         new Parsers.Prefix.NestedName(
                             new Substitution(0),
                             new SourceName.Identifier("abc")),
-                        new TemplateArgs(
+                        new Parsers.TemplateArgs(
                             new IParsingResult[]
                             {
                                 new TemplateArg.ArgPack(
@@ -93,7 +93,7 @@ namespace CxxDemangler.Tests.Parsing
                         new Parsers.Prefix.NestedName(
                             new Substitution(0),
                             new SourceName.Identifier("abc")),
-                        new TemplateArgs(
+                        new Parsers.TemplateArgs(
                             new IParsingResult[]
                             {
                                 new TemplateArg.ArgPack(

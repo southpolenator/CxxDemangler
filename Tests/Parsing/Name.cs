@@ -1,5 +1,4 @@
-﻿using CxxDemangler.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -12,8 +11,8 @@ namespace CxxDemangler.Tests.Parsing
             Verify("NS0_3abcE...",
                 new Parsers.NestedName(
                     new Parsers.Prefix.NestedName(
-                        new Substitution(1),
-                        new SourceName.Identifier("abc")),
+                        new Parsers.Substitution(1),
+                        new Parsers.SourceName.Identifier("abc")),
                     null,
                     null));
         }
@@ -22,7 +21,7 @@ namespace CxxDemangler.Tests.Parsing
         public void NameUnscoped()
         {
             Verify("3abc...",
-                new SourceName.Identifier("abc"));
+                new Parsers.SourceName.Identifier("abc"));
         }
 
         [TestMethod]
@@ -30,11 +29,11 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("dlIcE...",
                 new Parsers.Name.UnscopedTemplate(
-                    new SimpleOperatorName(SimpleOperatorName.Values.Delete),
-                    new TemplateArgs(
+                    new Parsers.SimpleOperatorName(Parsers.SimpleOperatorName.Values.Delete),
+                    new Parsers.TemplateArgs(
                         new[]
                         {
-                            new StandardBuiltinType(StandardBuiltinType.Values.Char),
+                            new Parsers.StandardBuiltinType(Parsers.StandardBuiltinType.Values.Char),
                         })));
         }
 
@@ -42,8 +41,8 @@ namespace CxxDemangler.Tests.Parsing
         public void NameLocal()
         {
             Verify("Z3abcEs...",
-                new LocalName.Relative(
-                    new SourceName.Identifier("abc"),
+                new Parsers.LocalName.Relative(
+                    new Parsers.SourceName.Identifier("abc"),
                     null,
                     null));
         }

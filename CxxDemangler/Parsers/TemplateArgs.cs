@@ -2,6 +2,7 @@
 
 namespace CxxDemangler.Parsers
 {
+    // <template-args> ::= I <template-arg>+ E
     internal class TemplateArgs : IParsingResult
     {
         public TemplateArgs(IReadOnlyList<IParsingResult> arguments)
