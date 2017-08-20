@@ -1,5 +1,12 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <expr-primary> ::= L <type> <value number> E                          # integer literal
+    //                ::= L <type> <value float> E                           # floating literal
+    //                ::= L <string type> E                                  # string literal
+    //                ::= L <nullptr type> E                                 # nullptr literal (i.e., "LDnE")
+    //                ::= L <pointer type> 0 E                               # null pointer template argument
+    //                ::= L <type> <real-part float> _ <imag-part float> E   # complex floating point literal (C 2000)
+    //                ::= L <mangled-name> E                                 # external name
     internal class ExprPrimary
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -39,24 +46,25 @@
 
         internal class External : IParsingResult
         {
-            private IParsingResult name;
-
             public External(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class Literal : IParsingResult
         {
-            private string literal;
-            private IParsingResult type;
-
-            public Literal(IParsingResult type, string literal)
+            public Literal(IParsingResult type, string name)
             {
-                this.type = type;
-                this.literal = literal;
+                Type = type;
+                Name = name;
             }
+
+            public IParsingResult Type { get; private set; }
+
+            public string Name { get; private set; }
         }
     }
 }

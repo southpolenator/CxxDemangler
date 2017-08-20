@@ -13,7 +13,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.SimpleOperatorName(Parsers.SimpleOperatorName.Values.UnaryPlus),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -24,10 +24,10 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.SimpleOperatorName(Parsers.SimpleOperatorName.Values.RightShift),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1"),
+                        name: "1"),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -38,13 +38,13 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.SimpleOperatorName(Parsers.SimpleOperatorName.Values.Question),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1"),
+                        name: "1"),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "2"),
+                        name: "2"),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "3")));
+                        name: "3")));
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.PrefixInc(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.PrefixDec(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.Call(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1"),
+                        name: "1"),
                     new IParsingResult[0]));
         }
 
@@ -86,7 +86,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.Substitution(0),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -99,10 +99,10 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     }));
         }
 
@@ -116,10 +116,10 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     }));
         }
 
@@ -130,7 +130,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.BracedInitList(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -142,7 +142,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0)));
         }
@@ -156,7 +156,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0)));
         }
@@ -170,7 +170,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0),
                     new Parsers.Initializer(
@@ -186,7 +186,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0),
                     new Parsers.Initializer(
@@ -202,7 +202,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0)));
         }
@@ -216,7 +216,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0)));
         }
@@ -230,7 +230,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0),
                     new Parsers.Initializer(
@@ -246,7 +246,7 @@ namespace CxxDemangler.Tests.Parsing
                     {
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: "1"),
+                            name: "1"),
                     },
                     new Parsers.Substitution(0),
                     new Parsers.Initializer(
@@ -260,7 +260,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.GlobalDelete(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -270,7 +270,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.Delete(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -280,7 +280,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.GlobalDeleteArray(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -290,7 +290,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.DeleteArray(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -301,7 +301,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.Substitution(0),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -312,7 +312,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.Substitution(0),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -323,7 +323,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.Substitution(0),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.Substitution(0),
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -352,7 +352,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.TypeIdExpression(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -370,7 +370,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.SizeOfExpression(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -388,7 +388,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.AlignOfExpression(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]
@@ -398,7 +398,7 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.Expression.Noexcept(
                     new Parsers.ExprPrimary.Literal(
                         new Parsers.Substitution(0),
-                        literal: "1")));
+                        name: "1")));
         }
 
         [TestMethod]

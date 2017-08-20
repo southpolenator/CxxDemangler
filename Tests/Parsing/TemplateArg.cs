@@ -25,7 +25,7 @@ namespace CxxDemangler.Tests.Parsing
             Verify("LS_E...",
                 new Parsers.ExprPrimary.Literal(
                     new Parsers.Substitution(0),
-                    literal: ""));
+                    name: ""));
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace CxxDemangler.Tests.Parsing
                         new Parsers.Expression.Retrow(),
                         new Parsers.ExprPrimary.Literal(
                             new Parsers.Substitution(0),
-                            literal: ""),
+                            name: ""),
                         new Parsers.TemplateArg.ArgPack(
                             new IParsingResult[]
                             {
