@@ -1,5 +1,6 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <data-member-prefix> := <member source-name> M
     internal class DataMemberPrefix
     {
         public static IParsingResult Parse(ParsingContext context)
