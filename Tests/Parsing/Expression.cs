@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -514,6 +515,12 @@ namespace CxxDemangler.Tests.Parsing
             Verify("L_Z3abcE...",
                 new Parsers.ExprPrimary.External(
                     new Parsers.SourceName.Identifier("abc")));
+        }
+
+        internal override IEnumerable<IParsingResult> SubstitutionTableList()
+        {
+            yield return new Parsers.Type.PointerTo(
+                new Parsers.StandardBuiltinType(Parsers.StandardBuiltinType.Values.Int));
         }
 
         internal override IParsingResult Parse(ParsingContext context)

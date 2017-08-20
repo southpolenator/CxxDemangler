@@ -14,7 +14,7 @@
                 IParsingResult args = TemplateArgs.Parse(context);
                 IParsingResult result = new Template(param, args);
 
-                // TODO: context.SubstitutionTable.Add(result);
+                context.SubstitutionTable.Add(result);
                 return result;
             }
 
@@ -22,7 +22,7 @@
 
             if (decltype != null)
             {
-                // TODO: context.SubstitutionTable.Add(decltype);
+                context.SubstitutionTable.Add(decltype);
                 return decltype;
             }
 

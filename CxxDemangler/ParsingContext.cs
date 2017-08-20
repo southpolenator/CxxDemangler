@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CxxDemangler
+﻿namespace CxxDemangler
 {
     internal struct RewindState
     {
         public int Position { get; set; }
+
+        public int SubstitutionTableSize { get; set; }
     }
 
     internal struct ParsingContext
@@ -23,6 +20,7 @@ namespace CxxDemangler
                 return new RewindState()
                 {
                     Position = Parser.Position,
+                    SubstitutionTableSize = SubstitutionTable.Size,
                 };
             }
         }
@@ -30,6 +28,7 @@ namespace CxxDemangler
         public void Rewind(RewindState rewind)
         {
             Parser.Position = rewind.Position;
+            SubstitutionTable.Rewind(rewind.SubstitutionTableSize);
         }
     }
 }

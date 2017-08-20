@@ -9,16 +9,32 @@ namespace CxxDemangler.Tests
     {
         internal abstract IParsingResult Parse(ParsingContext context);
 
-        internal IParsingResult Parse(string input)
+        internal virtual IEnumerable<IParsingResult> SubstitutionTableList()
+        {
+            yield break;
+        }
+
+        internal ParsingContext CreateContext(string input)
         {
             ParsingContext context = CxxDemangler.CreateContext(input);
+
+            foreach (IParsingResult substitution in SubstitutionTableList())
+            {
+                context.SubstitutionTable.Add(substitution);
+            }
+            return context;
+        }
+
+        internal IParsingResult Parse(string input)
+        {
+            ParsingContext context = CreateContext(input);
 
             return Parse(context);
         }
 
         internal void Verify(string input, IParsingResult expected, string endsWith = "...")
         {
-            ParsingContext context = CxxDemangler.CreateContext(input);
+            ParsingContext context = CreateContext(input);
             IParsingResult actual = Parse(context);
 
             CompareParsingResult(expected, actual);

@@ -1,5 +1,5 @@
-﻿using CxxDemangler.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -13,8 +13,8 @@ namespace CxxDemangler.Tests.Parsing
                 new Parsers.BareFunctionType(
                     new[]
                     {
-                        new Substitution(0),
-                        new Substitution(0),
+                        new Parsers.Substitution(0),
+                        new Parsers.Substitution(0),
                     }));
         }
 
@@ -22,6 +22,11 @@ namespace CxxDemangler.Tests.Parsing
         public void BareFunctionTypeFailures()
         {
             Assert.IsNull(Parse(""));
+        }
+
+        internal override IEnumerable<IParsingResult> SubstitutionTableList()
+        {
+            yield return new Parsers.StandardBuiltinType(Parsers.StandardBuiltinType.Values.Char);
         }
 
         internal override IParsingResult Parse(ParsingContext context)

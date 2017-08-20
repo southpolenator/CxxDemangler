@@ -25,7 +25,7 @@
             if (parameter != null)
             {
                 IParsingResult result = new TemplateTemplateParam(parameter);
-                // TODO: context.SubstitutionTable.Add(result);
+                context.SubstitutionTable.Add(result);
                 return result;
             }
             return null;

@@ -1,5 +1,5 @@
-﻿using CxxDemangler.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -14,10 +14,10 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.BareFunctionType(
                         new[]
                         {
-                            new Substitution(0)
+                            new Parsers.Substitution(0)
                         }),
-                    new CvQualifiers(@const: true),
-                    new RefQualifier(RefQualifier.Values.LValueRef),
+                    new Parsers.CvQualifiers(@const: true),
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.LValueRef),
                     transactionSafe: true,
                     externC: true));
         }
@@ -30,10 +30,10 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.BareFunctionType(
                         new[]
                         {
-                            new Substitution(0)
+                            new Parsers.Substitution(0)
                         }),
                     null,
-                    new RefQualifier(RefQualifier.Values.LValueRef),
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.LValueRef),
                     transactionSafe: true,
                     externC: true));
         }
@@ -46,10 +46,10 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.BareFunctionType(
                         new[]
                         {
-                            new Substitution(0)
+                            new Parsers.Substitution(0)
                         }),
                     null,
-                    new RefQualifier(RefQualifier.Values.LValueRef),
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.LValueRef),
                     transactionSafe: false,
                     externC: true));
         }
@@ -62,10 +62,10 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.BareFunctionType(
                         new[]
                         {
-                            new Substitution(0)
+                            new Parsers.Substitution(0)
                         }),
                     null,
-                    new RefQualifier(RefQualifier.Values.LValueRef),
+                    new Parsers.RefQualifier(Parsers.RefQualifier.Values.LValueRef),
                     transactionSafe: false,
                     externC: false));
         }
@@ -78,7 +78,7 @@ namespace CxxDemangler.Tests.Parsing
                     new Parsers.BareFunctionType(
                         new[]
                         {
-                            new Substitution(0)
+                            new Parsers.Substitution(0)
                         }),
                     cvQualifiers: null,
                     refQualifier: null,
@@ -95,6 +95,11 @@ namespace CxxDemangler.Tests.Parsing
             Assert.IsNull(Parse("FYS_"));
             Assert.IsNull(Parse("F"));
             Assert.IsNull(Parse(""));
+        }
+
+        internal override IEnumerable<IParsingResult> SubstitutionTableList()
+        {
+            yield return new Parsers.StandardBuiltinType(Parsers.StandardBuiltinType.Values.Char);
         }
 
         internal override IParsingResult Parse(ParsingContext context)

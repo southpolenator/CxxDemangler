@@ -155,7 +155,7 @@ namespace CxxDemangler.Parsers
 
         private static IParsingResult AddToSubstitutionTable(ParsingContext context, IParsingResult result)
         {
-            // TODO: context.SubstitutionTable.Add();
+            context.SubstitutionTable.Add(result);
             return result;
         }
 

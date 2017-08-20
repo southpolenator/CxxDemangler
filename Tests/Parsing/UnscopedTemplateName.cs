@@ -1,5 +1,5 @@
-﻿using CxxDemangler.Parsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -10,14 +10,14 @@ namespace CxxDemangler.Tests.Parsing
         public void UnscopedTemplateNameUnscopedName()
         {
             Verify("dl...",
-                new SimpleOperatorName(SimpleOperatorName.Values.Delete));
+                new Parsers.SimpleOperatorName(Parsers.SimpleOperatorName.Values.Delete));
         }
 
         [TestMethod]
         public void UnscopedTemplateNameSubstitution()
         {
             Verify("S_...",
-                new Substitution(0));
+                new Parsers.Substitution(0));
         }
 
         [TestMethod]
@@ -25,6 +25,11 @@ namespace CxxDemangler.Tests.Parsing
         {
             Assert.IsNull(Parse("zzzz"));
             Assert.IsNull(Parse(""));
+        }
+
+        internal override IEnumerable<IParsingResult> SubstitutionTableList()
+        {
+            yield return new Parsers.SimpleOperatorName(Parsers.SimpleOperatorName.Values.New);
         }
 
         internal override IParsingResult Parse(ParsingContext context)

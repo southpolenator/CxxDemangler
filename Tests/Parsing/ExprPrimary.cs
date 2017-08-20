@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CxxDemangler.Tests.Parsing
 {
@@ -40,6 +41,11 @@ namespace CxxDemangler.Tests.Parsing
             Assert.IsNull(Parse("LS_"));
             Assert.IsNull(Parse("L"));
             Assert.IsNull(Parse(""));
+        }
+
+        internal override IEnumerable<IParsingResult> SubstitutionTableList()
+        {
+            yield return new Parsers.Expression.Retrow();
         }
 
         internal override IParsingResult Parse(ParsingContext context)

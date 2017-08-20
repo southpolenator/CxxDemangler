@@ -10,7 +10,7 @@
 
             if (name != null)
             {
-                // TODO: context.SubstitutionTable.Add(name);
+                context.SubstitutionTable.Add(name);
                 return name;
             }
 

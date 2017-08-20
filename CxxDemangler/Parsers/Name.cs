@@ -21,7 +21,7 @@
             {
                 if (context.Parser.Peek == 'I')
                 {
-                    // TODO: context.SubstitutionTable.Add(name);
+                    context.SubstitutionTable.Add(name);
                     IParsingResult args = TemplateArgs.Parse(context);
 
                     if (args == null)
