@@ -15,8 +15,7 @@ namespace CxxDemangler.Parsers
                 return null;
             }
 
-            Debug.Assert(nameLength >= 0);
-            if (nameLength == 0)
+            if (nameLength <= 0)
             {
                 context.Rewind(rewind);
                 return null;

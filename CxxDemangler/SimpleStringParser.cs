@@ -60,8 +60,19 @@
 
         public bool ParseNumber(out int number)
         {
+            int start = Position;
+            bool negative = false;
+
+            if (Peek == 'n')
+            {
+                number = -1;
+                Position++;
+                negative = true;
+            }
+
             if (!char.IsDigit(Peek))
             {
+                Position = start;
                 number = -1;
                 return false;
             }
@@ -77,8 +88,12 @@
 
             if (!int.TryParse(Input.Substring(numberStart, numberEnd - numberStart), out number))
             {
-                Position = numberStart;
+                Position = start;
                 return false;
+            }
+            if (negative)
+            {
+                number = -number;
             }
 
             return true;

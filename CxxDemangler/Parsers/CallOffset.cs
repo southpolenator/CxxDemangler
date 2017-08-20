@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <call-offset> ::= h <nv-offset> _
+    //               ::= v <v-offset> _
     internal class CallOffset
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -37,24 +39,25 @@
 
         internal class NonVirtual : IParsingResult
         {
-            private int offset;
-
             public NonVirtual(int offset)
             {
-                this.offset = offset;
+                Offset = offset;
             }
+
+            public int Offset { get; private set; }
         }
 
         internal class Virtual : IParsingResult
         {
-            private int offset;
-            private int virtualOffset;
-
             public Virtual(int offset, int virtualOffset)
             {
-                this.offset = offset;
-                this.virtualOffset = virtualOffset;
+                Offset = offset;
+                VirtualOffset = virtualOffset;
             }
+
+            public int Offset { get; private set; }
+
+            public int VirtualOffset { get; private set; }
         }
     }
 }
