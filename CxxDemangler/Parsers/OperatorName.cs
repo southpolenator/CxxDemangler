@@ -1,5 +1,55 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <operator-name> ::= nw	# new
+    //                 ::= na	# new[]
+    //                 ::= dl	# delete
+    //                 ::= da	# delete[]
+    //                 ::= ps   # + (unary)
+    //                 ::= ng	# - (unary)
+    //                 ::= ad	# & (unary)
+    //                 ::= de	# * (unary)
+    //                 ::= co	# ~
+    //                 ::= pl	# +
+    //                 ::= mi	# -
+    //                 ::= ml	# *
+    //                 ::= dv	# /
+    //                 ::= rm	# %
+    //                 ::= an	# &
+    //                 ::= or	# |
+    //                 ::= eo	# ^
+    //                 ::= aS	# =
+    //                 ::= pL	# +=
+    //                 ::= mI	# -=
+    //                 ::= mL	# *=
+    //                 ::= dV	# /=
+    //                 ::= rM	# %=
+    //                 ::= aN	# &=
+    //                 ::= oR	# |=
+    //                 ::= eO	# ^=
+    //                 ::= ls	# <<
+    //                 ::= rs	# >>
+    //                 ::= lS	# <<=
+    //                 ::= rS	# >>=
+    //                 ::= eq	# ==
+    //                 ::= ne	# !=
+    //                 ::= lt	# <
+    //                 ::= gt	# >
+    //                 ::= le	# <=
+    //                 ::= ge	# >=
+    //                 ::= nt	# !
+    //                 ::= aa	# &&
+    //                 ::= oo	# ||
+    //                 ::= pp	# ++ (postfix in <expression> context)
+    //                 ::= mm	# -- (postfix in <expression> context)
+    //                 ::= cm	# ,
+    //                 ::= pm	# ->*
+    //                 ::= pt	# ->
+    //                 ::= cl	# ()
+    //                 ::= ix	# []
+    //                 ::= qu	# ?
+    //                 ::= cv <type>	# (cast)
+    //                 ::= li <source-name>          # operator ""
+    //                 ::= v <digit> <source-name>	# vendor extended operator
     internal class OperatorName
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -72,32 +122,32 @@
 
         internal class Cast : IParsingResult
         {
-            private IParsingResult type;
-
             public Cast(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class Literal : IParsingResult
         {
-            private IParsingResult name;
-
             public Literal(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class VendorExtension : IParsingResult
         {
-            private IParsingResult name;
-
             public VendorExtension(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
     }
 }
