@@ -2,6 +2,12 @@
 
 namespace CxxDemangler.Parsers
 {
+    //   <unresolved-name> ::= [gs] <base-unresolved-name>                     # x or (with "gs") ::x
+    //                     ::= sr <unresolved-type> <base-unresolved-name>     # T::x / decltype(p)::x
+    //                     ::= srN <unresolved-type> <unresolved-qualifier-level>+ E <base-unresolved-name>
+    //                                                                         # T::N::x /decltype(p)::N::x
+    //                     ::= [gs] sr <unresolved-qualifier-level>+ E <base-unresolved-name>
+    //                                                                         # A::x, N::y, A<T>::z; "gs" means leading "::"
     internal class UnresolvedName
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -86,50 +92,54 @@ namespace CxxDemangler.Parsers
 
         internal class Global : IParsingResult
         {
-            private IParsingResult name;
-
             public Global(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class GlobalNested2 : IParsingResult
         {
-            private List<IParsingResult> levels;
-            private IParsingResult name;
-
-            public GlobalNested2(List<IParsingResult> levels, IParsingResult name)
+            public GlobalNested2(IReadOnlyList<IParsingResult> levels, IParsingResult name)
             {
-                this.levels = levels;
-                this.name = name;
+                Levels = levels;
+                Name = name;
             }
+
+            public IReadOnlyList<IParsingResult> Levels { get; private set; }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class Nested1 : IParsingResult
         {
-            private List<IParsingResult> levels;
-            private IParsingResult name;
-            private IParsingResult type;
-
-            public Nested1(IParsingResult type, List<IParsingResult> levels, IParsingResult name)
+            public Nested1(IParsingResult type, IReadOnlyList<IParsingResult> levels, IParsingResult name)
             {
-                this.type = type;
-                this.levels = levels;
-                this.name = name;
+                Type = type;
+                Levels = levels;
+                Name = name;
             }
+
+            public IParsingResult Type { get; private set; }
+
+            public IReadOnlyList<IParsingResult> Levels { get; private set; }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class Nested2 : IParsingResult
         {
-            private List<IParsingResult> levels;
-            private IParsingResult name;
-
-            public Nested2(List<IParsingResult> levels, IParsingResult name)
+            public Nested2(IReadOnlyList<IParsingResult> levels, IParsingResult name)
             {
-                this.levels = levels;
-                this.name = name;
+                Levels = levels;
+                Name = name;
             }
+
+            public IReadOnlyList<IParsingResult> Levels { get; private set; }
+
+            public IParsingResult Name { get; private set; }
         }
     }
 }
