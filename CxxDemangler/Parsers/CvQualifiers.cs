@@ -1,5 +1,6 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <CV-qualifiers> ::= [r] [V] [K] 	# restrict (C99), volatile, const
     internal class CvQualifiers : IParsingResult
     {
         public CvQualifiers(bool restrict = false, bool @volatile = false, bool @const = false)
