@@ -2,8 +2,13 @@
 
 namespace CxxDemangler.Parsers
 {
-    internal class Discriminator
+    internal class Discriminator : IParsingResult
     {
+        public Discriminator(int number)
+        {
+            Number = number;
+        }
+
         public int Number { get; private set; }
 
         public static Discriminator Parse(ParsingContext context)
@@ -24,10 +29,7 @@ namespace CxxDemangler.Parsers
                     Debug.Assert(number >= 0);
                     if (number >= 10 && context.Parser.VerifyString("_"))
                     {
-                        return new Discriminator()
-                        {
-                            Number = number,
-                        };
+                        return new Discriminator(number);
                     }
                 }
                 context.Rewind(rewind);
@@ -39,10 +41,7 @@ namespace CxxDemangler.Parsers
                 int number = context.Parser.Peek - '0';
 
                 context.Parser.Position++;
-                return new Discriminator()
-                {
-                    Number = number,
-                };
+                return new Discriminator(number);
             }
 
             context.Rewind(rewind);

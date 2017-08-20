@@ -1,5 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <local-name> := Z <function encoding> E <entity name> [<discriminator>]
+    //              := Z <function encoding> E s [<discriminator>]
     internal class LocalName
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -53,30 +55,34 @@
 
         internal class Default : IParsingResult
         {
-            private IParsingResult encoding;
-            private IParsingResult name;
-            private int? param;
-
             public Default(IParsingResult encoding, int? param, IParsingResult name)
             {
-                this.encoding = encoding;
-                this.param = param;
-                this.name = name;
+                Encoding = encoding;
+                Param = param;
+                Name = name;
             }
+
+            public IParsingResult Encoding { get; private set; }
+
+            public IParsingResult Name { get; private set; }
+
+            public int? Param { get; private set; }
         }
 
         internal class Relative : IParsingResult
         {
-            private Discriminator discriminator;
-            private IParsingResult encoding;
-            private IParsingResult name;
-
             public Relative(IParsingResult encoding, IParsingResult name, Discriminator discriminator)
             {
-                this.encoding = encoding;
-                this.name = name;
-                this.discriminator = discriminator;
+                Encoding = encoding;
+                Name = name;
+                Discriminator = discriminator;
             }
+
+            public Discriminator Discriminator { get; private set; }
+
+            public IParsingResult Encoding { get; private set; }
+
+            public IParsingResult Name { get; private set; }
         }
     }
 }
