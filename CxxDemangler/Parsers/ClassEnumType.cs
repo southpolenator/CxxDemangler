@@ -1,5 +1,9 @@
 ﻿namespace CxxDemangler.Parsers
 {
+    // <class-enum-type> ::= <name>     # non-dependent type name, dependent type name, or dependent typename-specifier
+    //                   ::= Ts <name>  # dependent elaborated type specifier using 'struct' or 'class'
+    //                   ::= Tu <name>  # dependent elaborated type specifier using 'union'
+    //                   ::= Te<name>  # dependent elaborated type specifier using 'enum'
     internal class ClassEnumType
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -47,32 +51,32 @@
 
         internal class ElaboratedEnum : IParsingResult
         {
-            private IParsingResult name;
-
             public ElaboratedEnum(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class ElaboratedStruct : IParsingResult
         {
-            private IParsingResult name;
-
             public ElaboratedStruct(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class ElaboratedUnion : IParsingResult
         {
-            private IParsingResult name;
-
             public ElaboratedUnion(IParsingResult name)
             {
-                this.name = name;
+                Name = name;
             }
+
+            public IParsingResult Name { get; private set; }
         }
     }
 }
