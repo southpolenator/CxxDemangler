@@ -2,6 +2,12 @@
 {
     internal class SimpleId : IParsingResult
     {
+        public SimpleId(IParsingResult name, IParsingResult arguments)
+        {
+            Name = name;
+            Arguments = arguments;
+        }
+
         public IParsingResult Name { get; private set; }
         public IParsingResult Arguments { get; private set; }
 
@@ -11,13 +17,9 @@
 
             if (name != null)
             {
-                IParsingResult args = TemplateArgs.Parse(context);
+                IParsingResult arguments = TemplateArgs.Parse(context);
 
-                return new SimpleId()
-                {
-                    Name = name,
-                    Arguments = args,
-                };
+                return new SimpleId(name, arguments);
             }
 
             return null;

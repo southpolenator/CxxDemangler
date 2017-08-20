@@ -4,7 +4,12 @@ namespace CxxDemangler.Parsers
 {
     internal class Initializer : IParsingResult
     {
-        public List<IParsingResult> Expressions { get; private set; }
+        public Initializer(IReadOnlyList<IParsingResult> expressions)
+        {
+            Expressions = expressions;
+        }
+
+        public IReadOnlyList<IParsingResult> Expressions { get; private set; }
 
         public static IParsingResult Parse(ParsingContext context)
         {
@@ -19,10 +24,7 @@ namespace CxxDemangler.Parsers
 
             if (context.Parser.VerifyString("E"))
             {
-                return new Initializer()
-                {
-                    Expressions = expressions,
-                };
+                return new Initializer(expressions);
             }
 
             context.Rewind(rewind);

@@ -3,6 +3,48 @@ using System.Collections.Generic;
 
 namespace CxxDemangler.Parsers
 {
+    // <expression> ::= <unary operator-name> <expression>
+    //              ::= <binary operator-name> <expression> <expression>
+    //              ::= <ternary operator-name> <expression> <expression> <expression>
+    //              ::= pp_ <expression>                                     # prefix ++
+    //              ::= mm_ <expression>                                     # prefix --
+    //              ::= cl <expression>+ E                                   # expression (expr-list), call
+    //              ::= cv <type> <expression>                               # type (expression), conversion with one argument
+    //              ::= cv <type> _ <expression>* E                          # type (expr-list), conversion with other than one argument
+    //              ::= tl <type> <expression>* E                            # type {expr-list}, conversion with braced-init-list argument
+    //              ::= il <expression>* E                                   # {expr-list}, braced-init-list in any other context
+    //              ::= [gs] nw <expression>* _ <type> E                     # new (expr-list) type
+    //              ::= [gs] nw <expression>* _ <type> <initializer>         # new (expr-list) type (init)
+    //              ::= [gs] na <expression>* _ <type> E                     # new[] (expr-list) type
+    //              ::= [gs] na <expression>* _ <type> <initializer>         # new[] (expr-list) type (init)
+    //              ::= [gs] dl <expression>                                 # delete expression
+    //              ::= [gs] da <expression>                                 # delete[] expression
+    //              ::= dc <type> <expression>                               # dynamic_cast<type> (expression)
+    //              ::= sc <type> <expression>                               # static_cast<type> (expression)
+    //              ::= cc <type> <expression>                               # const_cast<type> (expression)
+    //              ::= rc <type> <expression>                               # reinterpret_cast<type> (expression)
+    //              ::= ti <type>                                            # typeid (type)
+    //              ::= te <expression>                                      # typeid (expression)
+    //              ::= st <type>                                            # sizeof (type)
+    //              ::= sz <expression>                                      # sizeof (expression)
+    //              ::= at <type>                                            # alignof (type)
+    //              ::= az <expression>                                      # alignof (expression)
+    //              ::= nx <expression>                                      # noexcept (expression)
+    //              ::= <template-param>
+    //              ::= <function-param>
+    //              ::= dt <expression> <unresolved-name>                    # expr.name
+    //              ::= pt <expression> <unresolved-name>                    # expr->name
+    //              ::= ds <expression> <expression>                         # expr.*expr
+    //              ::= sZ <template-param>                                  # sizeof...(T), size of a template parameter pack
+    //              ::= sZ <function-param>                                  # sizeof...(parameter), size of a function parameter pack
+    //              ::= sP <template-arg>* E                                 # sizeof...(T), size of a captured template parameter pack from an alias template
+    //              ::= sp <expression>                                      # expression..., pack expansion
+    //              ::= tw <expression>                                      # throw expression
+    //              ::= tr                                                   # throw with no operand (rethrow)
+    //              ::= <unresolved-name>                                    # f(p), N::f(p), ::f(p),
+    //                                                                       # freestanding dependent name (e.g., T::x),
+    //                                                                       # objectless nonstatic member reference
+    //              ::= <expr-primary>
     internal class Expression
     {
         public static IParsingResult Parse(ParsingContext context)
@@ -133,7 +175,7 @@ namespace CxxDemangler.Parsers
             {
                 return ParseWithEnd<SizeofCapturedTemplatePack>(rewind, context, ZeroOrMore(TemplateArg.Parse));
             }
-            if (context.Parser.VerifyString("sP"))
+            if (context.Parser.VerifyString("sp"))
             {
                 return Parse<PackExpansion>(rewind, context, Expression.Parse);
             }
@@ -321,7 +363,7 @@ namespace CxxDemangler.Parsers
         private static IParsingResult Parse<T>(RewindState rewind, ParsingContext context, params Func<ParsingContext, object>[] paramsParse)
             where T : IParsingResult
         {
-            object[] paramsValue = new IParsingResult[paramsParse.Length];
+            object[] paramsValue = new object[paramsParse.Length];
 
             for (int i = 0; i < paramsParse.Length; i++)
             {
@@ -350,284 +392,294 @@ namespace CxxDemangler.Parsers
 
         internal class PrefixDec : IParsingResult
         {
-            private IParsingResult expression;
-
             public PrefixDec(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class TypeIdExpression : IParsingResult
         {
-            private IParsingResult expression;
-
             public TypeIdExpression(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class TypeIdType : IParsingResult
         {
-            private IParsingResult type;
-
             public TypeIdType(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class SizeOfType : IParsingResult
         {
-            private IParsingResult type;
-
             public SizeOfType(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class SizeOfExpression : IParsingResult
         {
-            private IParsingResult expression;
-
             public SizeOfExpression(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class AlignOfType : IParsingResult
         {
-            private IParsingResult type;
-
             public AlignOfType(IParsingResult type)
             {
-                this.type = type;
+                Type = type;
             }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class AlignOfExpression : IParsingResult
         {
-            private IParsingResult expression;
-
             public AlignOfExpression(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class Noexcept : IParsingResult
         {
-            private IParsingResult expression;
-
             public Noexcept(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class PrefixInc : IParsingResult
         {
-            private IParsingResult expression;
-
             public PrefixInc(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class BracedInitList : IParsingResult
         {
-            private IParsingResult expression;
-
             public BracedInitList(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class Throw : IParsingResult
         {
-            private IParsingResult expression;
-
             public Throw(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class PackExpansion : IParsingResult
         {
-            private IParsingResult expression;
-
             public PackExpansion(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class Member : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult name;
-
             public Member(IParsingResult expression, IParsingResult name)
             {
-                this.expression = expression;
-                this.name = name;
+                Expression = expression;
+                Name = name;
             }
+
+            public IParsingResult Expression { get; private set; }
+            public IParsingResult Name { get; private set; }
         }
 
         internal class DeferMember : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult name;
-
             public DeferMember(IParsingResult expression, IParsingResult name)
             {
-                this.expression = expression;
-                this.name = name;
+                Expression = expression;
+                Name = name;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Name { get; private set; }
         }
 
         internal class PointerToMember : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult expression2;
-
             public PointerToMember(IParsingResult expression, IParsingResult expression2)
             {
-                this.expression = expression;
-                this.expression2 = expression2;
+                Expression = expression;
+                Expression2 = expression2;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Expression2 { get; private set; }
         }
 
         internal class SizeofCapturedTemplatePack : IParsingResult
         {
-            private List<IParsingResult> arguments;
-
-            public SizeofCapturedTemplatePack(List<IParsingResult> arguments)
+            public SizeofCapturedTemplatePack(IReadOnlyList<IParsingResult> arguments)
             {
-                this.arguments = arguments;
+                Arguments = arguments;
             }
+
+            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
         }
 
         internal class Call : IParsingResult
         {
-            private IParsingResult expression;
-            private List<IParsingResult> arguments;
-
-            public Call(IParsingResult expression, List<IParsingResult> arguments)
+            public Call(IParsingResult expression, IReadOnlyList<IParsingResult> arguments)
             {
-                this.expression = expression;
-                this.arguments = arguments;
+                Expression = expression;
+                Arguments = arguments;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
         }
 
         internal class ConversionMany : IParsingResult
         {
-            private List<IParsingResult> expressions;
-            private IParsingResult type;
-
-            public ConversionMany(IParsingResult type, List<IParsingResult> expressions)
+            public ConversionMany(IParsingResult type, IReadOnlyList<IParsingResult> expressions)
             {
-                this.type = type;
-                this.expressions = expressions;
+                Type = type;
+                Expressions = expressions;
             }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class ConversionBraced : IParsingResult
         {
-            private List<IParsingResult> expressions;
-            private IParsingResult type;
-
-            public ConversionBraced(IParsingResult type, List<IParsingResult> expressions)
+            public ConversionBraced(IParsingResult type, IReadOnlyList<IParsingResult> expressions)
             {
-                this.type = type;
-                this.expressions = expressions;
+                Type = type;
+                Expressions = expressions;
             }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class ConversionOne : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult type;
-
             public ConversionOne(IParsingResult type, IParsingResult expression)
             {
-                this.type = type;
-                this.expression = expression;
+                Type = type;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class DynamicCast : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult type;
-
             public DynamicCast(IParsingResult type, IParsingResult expression)
             {
-                this.type = type;
-                this.expression = expression;
+                Type = type;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class StaticCast : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult type;
-
             public StaticCast(IParsingResult type, IParsingResult expression)
             {
-                this.type = type;
-                this.expression = expression;
+                Type = type;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class ConstCast : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult type;
-
             public ConstCast(IParsingResult type, IParsingResult expression)
             {
-                this.type = type;
-                this.expression = expression;
+                Type = type;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class ReinterpretCast : IParsingResult
         {
-            private IParsingResult expression;
-            private IParsingResult type;
-
             public ReinterpretCast(IParsingResult type, IParsingResult expression)
             {
-                this.type = type;
-                this.expression = expression;
+                Type = type;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class SizeOfTemplatepack : IParsingResult
         {
-            private IParsingResult param;
-
-            public SizeOfTemplatepack(IParsingResult param)
+            public SizeOfTemplatepack(IParsingResult parameter)
             {
-                this.param = param;
+                Parameter = parameter;
             }
+
+            public IParsingResult Parameter { get; private set; }
         }
 
         internal class SizeOfFunctionPack : IParsingResult
         {
-            private IParsingResult param;
-
-            public SizeOfFunctionPack(IParsingResult param)
+            public SizeOfFunctionPack(IParsingResult parameter)
             {
-                this.param = param;
+                Parameter = parameter;
             }
+
+            public IParsingResult Parameter { get; private set; }
         }
 
         internal class Retrow : IParsingResult
@@ -636,140 +688,154 @@ namespace CxxDemangler.Parsers
 
         internal class GlobalNew : IParsingResult
         {
-            private List<IParsingResult> expressions;
-            private IParsingResult initializer;
-            private IParsingResult type;
-
-            public GlobalNew(List<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            public GlobalNew(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
             {
-                this.expressions = expressions;
-                this.type = type;
-                this.initializer = initializer;
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
             }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class New : IParsingResult
         {
-            private List<IParsingResult> expressions;
-            private IParsingResult initializer;
-            private IParsingResult type;
-
-            public New(List<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            public New(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
             {
-                this.expressions = expressions;
-                this.type = type;
-                this.initializer = initializer;
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
             }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class GlobalNewArray : IParsingResult
         {
-            private List<IParsingResult> expressions;
-            private IParsingResult initializer;
-            private IParsingResult type;
-
-            public GlobalNewArray(List<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            public GlobalNewArray(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
             {
-                this.expressions = expressions;
-                this.type = type;
-                this.initializer = initializer;
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
             }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class NewArray : IParsingResult
         {
-            private List<IParsingResult> expressions;
-            private IParsingResult initializer;
-            private IParsingResult type;
-
-            public NewArray(List<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            public NewArray(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
             {
-                this.expressions = expressions;
-                this.type = type;
-                this.initializer = initializer;
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
             }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
         }
 
         internal class Delete : IParsingResult
         {
-            private IParsingResult expression;
-
             public Delete(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class GlobalDelete : IParsingResult
         {
-            private IParsingResult expression;
-
             public GlobalDelete(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class GlobalDeleteArray : IParsingResult
         {
-            private IParsingResult expression;
-
             public GlobalDeleteArray(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class DeleteArray : IParsingResult
         {
-            private IParsingResult expression;
-
             public DeleteArray(IParsingResult expression)
             {
-                this.expression = expression;
+                Expression = expression;
             }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class Unary : IParsingResult
         {
-            private IParsingResult first;
-            private IParsingResult operatorName;
-
-            public Unary(IParsingResult operatorName, IParsingResult first)
+            public Unary(IParsingResult operatorName, IParsingResult expression)
             {
-                this.operatorName = operatorName;
-                this.first = first;
+                OperatorName = operatorName;
+                Expression = expression;
             }
+
+            public IParsingResult OperatorName { get; private set; }
+
+            public IParsingResult Expression { get; private set; }
         }
 
         internal class Binary : IParsingResult
         {
-            private IParsingResult first;
-            private IParsingResult operatorName;
-            private IParsingResult second;
-
-            public Binary(IParsingResult operatorName, IParsingResult first, IParsingResult second)
+            public Binary(IParsingResult operatorName, IParsingResult firstExpression, IParsingResult secondExpression)
             {
-                this.operatorName = operatorName;
-                this.first = first;
-                this.second = second;
+                OperatorName = operatorName;
+                FirstExpression = firstExpression;
+                SecondExpression = secondExpression;
             }
+
+            public IParsingResult OperatorName { get; private set; }
+
+            public IParsingResult FirstExpression { get; private set; }
+
+            public IParsingResult SecondExpression { get; private set; }
         }
 
         internal class Ternary : IParsingResult
         {
-            private IParsingResult first;
-            private IParsingResult operatorName;
-            private IParsingResult second;
-            private IParsingResult third;
-
-            public Ternary(IParsingResult operatorName, IParsingResult first, IParsingResult second, IParsingResult third)
+            public Ternary(IParsingResult operatorName, IParsingResult firstExpression, IParsingResult secondExpression, IParsingResult thirdExpression)
             {
-                this.operatorName = operatorName;
-                this.first = first;
-                this.second = second;
-                this.third = third;
+                OperatorName = operatorName;
+                FirstExpression = firstExpression;
+                SecondExpression = secondExpression;
+                ThirdExpression = thirdExpression;
             }
+
+            public IParsingResult OperatorName { get; private set; }
+
+            public IParsingResult FirstExpression { get; private set; }
+
+            public IParsingResult SecondExpression { get; private set; }
+
+            public IParsingResult ThirdExpression { get; private set; }
         }
     }
 }

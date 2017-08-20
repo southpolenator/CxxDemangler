@@ -2,6 +2,13 @@
 {
     internal class FunctionParam : IParsingResult
     {
+        public FunctionParam(CvQualifiers cvQualifiers, int scope, int? param)
+        {
+            CvQualifiers = cvQualifiers;
+            Scope = scope;
+            Param = param;
+        }
+
         public int Scope { get; private set; }
 
         public CvQualifiers CvQualifiers { get; private set; }
@@ -35,12 +42,7 @@
 
                 if (context.Parser.VerifyString("_"))
                 {
-                    return new FunctionParam()
-                    {
-                        Scope = scope,
-                        CvQualifiers = qualifiers,
-                        Param = param,
-                    };
+                    return new FunctionParam(qualifiers, scope, param);
                 }
             }
 
