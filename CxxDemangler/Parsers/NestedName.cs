@@ -36,6 +36,12 @@
                 return null;
             }
 
+            if (!(prefix is Parsers.Prefix.NestedName) && !(prefix is Parsers.Prefix.Template))
+            {
+                context.Rewind(rewind);
+                return null;
+            }
+
             if (!context.Parser.VerifyString("E"))
             {
                 context.Rewind(rewind);

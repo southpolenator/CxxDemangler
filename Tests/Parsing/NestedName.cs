@@ -108,8 +108,8 @@ namespace CxxDemangler.Tests.Parsing
         [TestMethod]
         public void NestedNameFailures()
         {
-            //Assert.IsNull(Parse("NS_E..."));
-            //Assert.IsNull(Parse("NS_DttrEE..."));
+            Assert.IsNull(Parse("NS_E..."));
+            Assert.IsNull(Parse("NS_DttrEE..."));
             Assert.IsNull(Parse("zzz"));
             Assert.IsNull(Parse("Nzzz"));
             Assert.IsNull(Parse("NKzzz"));
