@@ -98,19 +98,12 @@ namespace CxxDemangler.Parsers
             }
 
             public IParsingResult Name { get; private set; }
-        }
 
-        internal class GlobalNested2 : IParsingResult
-        {
-            public GlobalNested2(IReadOnlyList<IParsingResult> levels, IParsingResult name)
+            public void Demangle(DemanglingContext context)
             {
-                Levels = levels;
-                Name = name;
+                context.Writer.Append("::");
+                Name.Demangle(context);
             }
-
-            public IReadOnlyList<IParsingResult> Levels { get; private set; }
-
-            public IParsingResult Name { get; private set; }
         }
 
         internal class Nested1 : IParsingResult
@@ -127,6 +120,17 @@ namespace CxxDemangler.Parsers
             public IReadOnlyList<IParsingResult> Levels { get; private set; }
 
             public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                foreach (IParsingResult level in Levels)
+                {
+                    context.Writer.Append("::");
+                    level.Demangle(context);
+                }
+                Name.Demangle(context);
+            }
         }
 
         internal class Nested2 : IParsingResult
@@ -140,6 +144,40 @@ namespace CxxDemangler.Parsers
             public IReadOnlyList<IParsingResult> Levels { get; private set; }
 
             public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                foreach (IParsingResult level in Levels)
+                {
+                    context.Writer.Append("::");
+                    level.Demangle(context);
+                }
+                Name.Demangle(context);
+            }
+        }
+
+        internal class GlobalNested2 : IParsingResult
+        {
+            public GlobalNested2(IReadOnlyList<IParsingResult> levels, IParsingResult name)
+            {
+                Levels = levels;
+                Name = name;
+            }
+
+            public IReadOnlyList<IParsingResult> Levels { get; private set; }
+
+            public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("::");
+                foreach (IParsingResult level in Levels)
+                {
+                    context.Writer.Append("::");
+                    level.Demangle(context);
+                }
+                Name.Demangle(context);
+            }
         }
     }
 }

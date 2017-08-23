@@ -6,10 +6,10 @@
     //        ::= <local-name>
     internal class Name
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
-            IParsingResult name = NestedName.Parse(context);
+            IParsingResultExtended name = NestedName.Parse(context);
 
             if (name != null)
             {
@@ -22,7 +22,7 @@
                 if (context.Parser.Peek == 'I')
                 {
                     context.SubstitutionTable.Add(name);
-                    IParsingResult args = TemplateArgs.Parse(context);
+                    TemplateArgs args = TemplateArgs.Parse(context);
 
                     if (args == null)
                     {
@@ -41,7 +41,7 @@
             name = UnscopedTemplateName.Parse(context);
             if (name != null)
             {
-                IParsingResult args = TemplateArgs.Parse(context);
+                TemplateArgs args = TemplateArgs.Parse(context);
 
                 if (args == null)
                 {
@@ -55,17 +55,34 @@
             return LocalName.Parse(context);
         }
 
-        internal class UnscopedTemplate : IParsingResult
+        internal class UnscopedTemplate : IParsingResultExtended
         {
-            public UnscopedTemplate(IParsingResult name, IParsingResult args)
+            public UnscopedTemplate(IParsingResultExtended name, TemplateArgs args)
             {
                 Name = name;
                 Args = args;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
 
-            public IParsingResult Args { get; private set; }
+            public TemplateArgs Args { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                // Use new context with arguments on stack for name demangling
+                DemanglingContext tempContext = context;
+
+                tempContext.Stack.Push(Args);
+                Name.Demangle(tempContext);
+
+                // Return to old context
+                Args.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Args;
+            }
         }
     }
 }

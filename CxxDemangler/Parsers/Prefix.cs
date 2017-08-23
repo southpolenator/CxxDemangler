@@ -11,18 +11,21 @@ namespace CxxDemangler.Parsers
     //          ::= <substitution>
     internal class Prefix
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
-            IParsingResult result = null;
+            IParsingResultExtended result = null;
+            bool isResultTemplatePrefix = false;
 
             while (!context.Parser.IsEnd)
             {
+                bool isResultTemplatePrefixNext = false;
+
                 switch (context.Parser.Peek)
                 {
                     case 'S':
                         {
-                            IParsingResult substitution = Substitution.Parse(context);
+                            IParsingResultExtended substitution = Substitution.Parse(context);
 
                             if (substitution == null)
                             {
@@ -35,7 +38,7 @@ namespace CxxDemangler.Parsers
                         break;
                     case 'T':
                         {
-                            IParsingResult param = TemplateParam.Parse(context);
+                            IParsingResultExtended param = TemplateParam.Parse(context);
 
                             if (param == null)
                             {
@@ -44,11 +47,12 @@ namespace CxxDemangler.Parsers
                             }
 
                             result = AddToSubstitutionTable(context, param);
+                            isResultTemplatePrefixNext = true;
                         }
                         break;
                     case 'D':
                         {
-                            IParsingResult decltype = Decltype.Parse(context);
+                            IParsingResultExtended decltype = Decltype.Parse(context);
 
                             if (decltype != null)
                             {
@@ -56,7 +60,7 @@ namespace CxxDemangler.Parsers
                             }
                             else
                             {
-                                IParsingResult name = UnqualifiedName.Parse(context);
+                                IParsingResultExtended name = UnqualifiedName.Parse(context);
 
                                 if (name == null)
                                 {
@@ -72,28 +76,29 @@ namespace CxxDemangler.Parsers
                                 {
                                     result = AddToSubstitutionTable(context, name);
                                 }
+                                isResultTemplatePrefixNext = true;
                             }
                         }
                         break;
                     default:
-                        if (context.Parser.Peek == 'I' && result != null /*TODO: && current.as_ref().unwrap().is_template_prefix(subs)*/)
+                        if (context.Parser.Peek == 'I' && result != null && isResultTemplatePrefix)
                         {
-                            IParsingResult args = TemplateArgs.Parse(context);
+                            TemplateArgs arguments = TemplateArgs.Parse(context);
 
-                            if (args == null)
+                            if (arguments == null)
                             {
                                 context.Rewind(rewind);
                                 return null;
                             }
 
-                            result = AddToSubstitutionTable(context, new Template(result, args));
+                            result = AddToSubstitutionTable(context, new Template(result, arguments));
                         }
                         else if (result != null && SourceName.StartsWith(context))
                         {
                             Debug.Assert(UnqualifiedName.StartsWith(context));
                             Debug.Assert(DataMemberPrefix.StartsWith(context));
 
-                            IParsingResult name = SourceName.Parse(context);
+                            IParsingResultExtended name = SourceName.Parse(context);
 
                             if (name == null)
                             {
@@ -115,11 +120,12 @@ namespace CxxDemangler.Parsers
                                 {
                                     result = AddToSubstitutionTable(context, name);
                                 }
+                                isResultTemplatePrefixNext = true;
                             }
                         }
                         else if (UnqualifiedName.StartsWith(context))
                         {
-                            IParsingResult name = UnqualifiedName.Parse(context);
+                            IParsingResultExtended name = UnqualifiedName.Parse(context);
 
                             if (name == null)
                             {
@@ -135,6 +141,7 @@ namespace CxxDemangler.Parsers
                             {
                                 result = AddToSubstitutionTable(context, name);
                             }
+                            isResultTemplatePrefixNext = true;
                         }
                         else
                         {
@@ -148,52 +155,87 @@ namespace CxxDemangler.Parsers
                         }
                         break;
                 }
+                isResultTemplatePrefix = isResultTemplatePrefixNext;
             }
 
             return result;
         }
 
-        private static IParsingResult AddToSubstitutionTable(ParsingContext context, IParsingResult result)
+        private static IParsingResultExtended AddToSubstitutionTable(ParsingContext context, IParsingResultExtended result)
         {
             context.SubstitutionTable.Add(result);
             return result;
         }
 
-        internal class DataMember : IParsingResult
+        internal class DataMember : IParsingResultExtended
         {
-            public DataMember(IParsingResult name, IParsingResult member)
+            public DataMember(IParsingResultExtended name, IParsingResult member)
             {
                 Name = name;
                 Member = member;
             }
 
             public IParsingResult Member { get; private set; }
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Name.Demangle(context);
+                Member.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return null;
+            }
         }
 
-        internal class NestedName : IParsingResult
+        internal class NestedName : IParsingResultExtended
         {
-            public NestedName(IParsingResult previous, IParsingResult name)
+            public NestedName(IParsingResultExtended previous, IParsingResultExtended name)
             {
                 Previous = previous;
                 Name = name;
             }
 
-            public IParsingResult Previous { get; private set; }
+            public IParsingResultExtended Previous { get; private set; }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Previous.Demangle(context);
+                context.Writer.Append("::");
+                Name.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs() ?? Previous.GetTemplateArgs();
+            }
         }
 
-        internal class Template : IParsingResult
+        internal class Template : IParsingResultExtended
         {
-            public Template(IParsingResult name, IParsingResult arguments)
+            public Template(IParsingResultExtended name, TemplateArgs arguments)
             {
                 Name = name;
                 Arguments = arguments;
             }
 
-            public IParsingResult Arguments { get; private set; }
-            public IParsingResult Name { get; private set; }
+            public TemplateArgs Arguments { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Name.Demangle(context);
+                Arguments.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Arguments;
+            }
         }
     }
 }

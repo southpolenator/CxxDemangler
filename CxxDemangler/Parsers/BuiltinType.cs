@@ -32,11 +32,11 @@
     //                ::= Dc # decltype(auto)
     //                ::= Dn # std::nullptr_t (i.e., decltype(nullptr))
     //                ::= u <source-name>    # vendor extended type
-    internal class BuiltinType : IParsingResult
+    internal class BuiltinType : IParsingResultExtended
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult type = StandardBuiltinType.Parse(context);
+            IParsingResultExtended type = StandardBuiltinType.Parse(context);
 
             if (type != null)
             {
@@ -47,7 +47,7 @@
 
             if (context.Parser.VerifyString("u"))
             {
-                IParsingResult name = SourceName.Parse(context);
+                IParsingResultExtended name = SourceName.Parse(context);
 
                 return new Extension(name);
             }
@@ -56,14 +56,34 @@
             return null;
         }
 
+        public virtual void Demangle(DemanglingContext context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual TemplateArgs GetTemplateArgs()
+        {
+            throw new System.NotImplementedException();
+        }
+
         internal class Extension : BuiltinType
         {
-            public Extension(IParsingResult name)
+            public Extension(IParsingResultExtended name)
             {
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public override void Demangle(DemanglingContext context)
+            {
+                Name.Demangle(context);
+            }
+
+            public override TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ namespace CxxDemangler.Parsers
     {
         private static HashSet<char> startingLetters = new HashSet<char>();
         private static Dictionary<string, T> mappings = new Dictionary<string, T>();
+        private static Dictionary<T, string> demangledText = new Dictionary<T, string>();
 
         static DictionaryParser()
         {
@@ -19,6 +20,7 @@ namespace CxxDemangler.Parsers
                 DictionaryValueAttribute value = (DictionaryValueAttribute)memberInfo.GetCustomAttribute(typeof(DictionaryValueAttribute), false);
 
                 mappings.Add(value.Input, (T)enumValue);
+                demangledText.Add((T)enumValue, value.Output);
                 startingLetters.Add(value.Input[0]);
             }
         }
@@ -41,6 +43,11 @@ namespace CxxDemangler.Parsers
         public static bool StartsWith(ParsingContext context)
         {
             return startingLetters.Contains(context.Parser.Peek);
+        }
+
+        public static void Demangle(T value, DemanglingContext context)
+        {
+            context.Writer.Append(demangledText[value]);
         }
     }
 }

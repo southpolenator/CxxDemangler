@@ -11,7 +11,7 @@
 
             if (param != null)
             {
-                IParsingResult args = TemplateArgs.Parse(context);
+                TemplateArgs args = TemplateArgs.Parse(context);
                 IParsingResult result = new Template(param, args);
 
                 context.SubstitutionTable.Add(result);
@@ -31,15 +31,29 @@
 
         internal class Template : IParsingResult
         {
-            public Template(IParsingResult parameter, IParsingResult arguments)
+            public Template(IParsingResult parameter, TemplateArgs arguments)
             {
                 Parameter = parameter;
                 Arguments = arguments;
             }
 
-            public IParsingResult Arguments;
+            public TemplateArgs Arguments;
 
             public IParsingResult Parameter;
+
+            public void Demangle(DemanglingContext context)
+            {
+                if (Arguments != null)
+                {
+                    context.Stack.Push(Arguments);
+                    Parameter.Demangle(context);
+                    Arguments.Demangle(context);
+                }
+                else
+                {
+                    Parameter.Demangle(context);
+                }
+            }
         }
     }
 }

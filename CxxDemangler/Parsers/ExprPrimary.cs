@@ -52,6 +52,11 @@
             }
 
             public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Name.Demangle(context);
+            }
         }
 
         internal class Literal : IParsingResult
@@ -65,6 +70,21 @@
             public IParsingResult Type { get; private set; }
 
             public string Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                StandardBuiltinType nullptr = Type as StandardBuiltinType;
+
+                if (nullptr != null && nullptr.Value == StandardBuiltinType.Values.Nullptr)
+                {
+                    context.Writer.Append("nullptr");
+                }
+                else
+                {
+                    Type.Demangle(context);
+                    context.Writer.Append(Name);
+                }
+            }
         }
     }
 }

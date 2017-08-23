@@ -26,5 +26,11 @@
 
             return null;
         }
+
+        public void Demangle(DemanglingContext context)
+        {
+            Name.Demangle(context);
+            Arguments?.Demangle(context);
+        }
     }
 }

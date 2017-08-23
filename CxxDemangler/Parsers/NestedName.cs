@@ -2,22 +2,22 @@
 {
     // <nested-name> ::= N [<CV-qualifiers>] [<ref-qualifier>] <prefix> <unqualified-name> E
     //               ::= N [<CV-qualifiers>] [<ref-qualifier>] <template-prefix> <template-args> E
-    internal class NestedName : IParsingResult
+    internal class NestedName : IParsingResultExtended
     {
-        public NestedName(IParsingResult prefix, CvQualifiers cvQualifiers, RefQualifier refQualifier)
+        public NestedName(IParsingResultExtended prefix, CvQualifiers cvQualifiers, RefQualifier refQualifier)
         {
             Prefix = prefix;
             CvQualifiers = cvQualifiers;
             RefQualifier = refQualifier;
         }
 
-        public IParsingResult Prefix { get; private set; }
+        public IParsingResultExtended Prefix { get; private set; }
 
         public CvQualifiers CvQualifiers { get; private set; }
 
         public RefQualifier RefQualifier { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -28,7 +28,7 @@
 
             CvQualifiers cvQualifiers = CvQualifiers.Parse(context);
             RefQualifier refQualifier = RefQualifier.Parse(context);
-            IParsingResult prefix = Parsers.Prefix.Parse(context);
+            IParsingResultExtended prefix = Parsers.Prefix.Parse(context);
 
             if (prefix == null)
             {
@@ -49,6 +49,28 @@
             }
 
             return new NestedName(prefix, cvQualifiers, refQualifier);
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            Prefix.Demangle(context);
+
+            if (context.Inner.Count > 0)
+            {
+                context.Inner.Pop().DemangleAsInner(context);
+            }
+
+            CvQualifiers?.Demangle(context);
+            if (RefQualifier != null)
+            {
+                context.Writer.EnsureSpace();
+                RefQualifier.Demangle(context);
+            }
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            return Prefix.GetTemplateArgs();
         }
     }
 }

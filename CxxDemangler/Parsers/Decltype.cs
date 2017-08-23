@@ -2,7 +2,7 @@
 {
     // <decltype>  ::= Dt <expression> E  # decltype of an id-expression or class member access (C++0x)
     //             ::= DT<expression> E  # decltype of an expression (C++0x)
-    internal class Decltype : IParsingResult
+    internal class Decltype : IParsingResultExtended
     {
         public Decltype(IParsingResult expression, bool idExpression)
         {
@@ -14,7 +14,7 @@
 
         public IParsingResult Expression { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -50,6 +50,18 @@
             }
 
             context.Rewind(rewind);
+            return null;
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            context.Writer.Append("decltype (");
+            Expression.Demangle(context);
+            context.Writer.Append(")");
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
             return null;
         }
     }

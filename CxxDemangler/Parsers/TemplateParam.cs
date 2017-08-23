@@ -2,7 +2,7 @@
 {
     // <template-param> ::= T_	# first template parameter
     //                  ::= T <parameter-2 non-negative number> _
-    internal class TemplateParam : IParsingResult
+    internal class TemplateParam : IParsingResultExtended
     {
         public TemplateParam(int number)
         {
@@ -11,7 +11,7 @@
 
         public int Number { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -31,6 +31,18 @@
                 context.Rewind(rewind);
             }
 
+            return null;
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            IParsingResult arg = context.Stack.GetTemplateArg(Number);
+
+            arg?.Demangle(context);
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
             return null;
         }
     }

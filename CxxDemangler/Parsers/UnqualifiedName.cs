@@ -7,7 +7,7 @@
     //                    ::= DC <source-name>+ E      # structured binding declaration
     internal class UnqualifiedName
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             return OperatorName.Parse(context) ?? CtorDtorName.Parse(context) ?? SourceName.Parse(context) ?? UnnamedTypeName.Parse(context);
         }

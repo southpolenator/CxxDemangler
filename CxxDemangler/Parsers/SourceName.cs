@@ -5,7 +5,7 @@ namespace CxxDemangler.Parsers
     // <source-name> ::= <positive length number> <identifier>
     internal class SourceName
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
             int nameLength;
@@ -55,7 +55,7 @@ namespace CxxDemangler.Parsers
             return char.IsDigit(context.Parser.Peek);
         }
 
-        internal class Identifier : IParsingResult
+        internal class Identifier : IParsingResultExtended
         {
             public Identifier(string name)
             {
@@ -63,6 +63,31 @@ namespace CxxDemangler.Parsers
             }
 
             public string Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                // Handle GCC's anonymous namespace mangling.
+                const string anonymusNamespacePrefix = "_GLOBAL_";
+
+                if (Name.StartsWith(anonymusNamespacePrefix) && Name.Length >= anonymusNamespacePrefix.Length + 2)
+                {
+                    char first = Name[anonymusNamespacePrefix.Length];
+                    char second = Name[anonymusNamespacePrefix.Length + 1];
+
+                    if (second == 'N' && (first == '.' || first == '$' || first == '_'))
+                    {
+                        context.Writer.Append("(anonymous namespace)");
+                        return;
+                    }
+                }
+
+                context.Writer.Append(Name);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return null;
+            }
         }
     }
 }

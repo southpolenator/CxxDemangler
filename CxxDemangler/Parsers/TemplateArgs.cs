@@ -3,7 +3,7 @@
 namespace CxxDemangler.Parsers
 {
     // <template-args> ::= I <template-arg>+ E
-    internal class TemplateArgs : IParsingResult
+    internal class TemplateArgs : IParsingResult, IArgumentScope
     {
         public TemplateArgs(IReadOnlyList<IParsingResult> arguments)
         {
@@ -12,7 +12,7 @@ namespace CxxDemangler.Parsers
 
         public IReadOnlyList<IParsingResult> Arguments { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static TemplateArgs Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -27,6 +27,31 @@ namespace CxxDemangler.Parsers
                 context.Rewind(rewind);
             }
 
+            return null;
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            context.Writer.Append("<");
+            Arguments.Demangle(context);
+            if (context.Writer.Last == '>')
+            {
+                context.Writer.Append(" ");
+            }
+            context.Writer.Append(">");
+        }
+
+        public IParsingResult GetFunctionArg(int scope)
+        {
+            if (scope >= 0 && scope < Arguments.Count)
+            {
+                return Arguments[scope];
+            }
+            return null;
+        }
+
+        public IParsingResult GetTemplateArg(int number)
+        {
             return null;
         }
     }

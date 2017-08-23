@@ -4,9 +4,9 @@
     //                          ::= <substitution>
     internal class UnscopedTemplateName
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult name = UnscopedName.Parse(context);
+            IParsingResultExtended name = UnscopedName.Parse(context);
 
             if (name != null)
             {

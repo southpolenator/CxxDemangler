@@ -4,13 +4,13 @@
     //                 ::= St <unqualified-name>   # ::std::
     internal class UnscopedName
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
             if (context.Parser.VerifyString("St"))
             {
-                IParsingResult name = UnqualifiedName.Parse(context);
+                IParsingResultExtended name = UnqualifiedName.Parse(context);
 
                 if (name == null)
                 {
@@ -24,14 +24,25 @@
             return UnqualifiedName.Parse(context);
         }
 
-        internal class Std : IParsingResult
+        internal class Std : IParsingResultExtended
         {
-            public Std(IParsingResult name)
+            public Std(IParsingResultExtended name)
             {
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("std::");
+                Name.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
     }
 }

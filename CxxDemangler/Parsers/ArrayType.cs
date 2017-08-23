@@ -4,9 +4,16 @@ namespace CxxDemangler.Parsers
 {
     // <array-type> ::= A <positive dimension number> _ <element type>
     //              ::= A[< dimension expression >] _<element type>
-    internal class ArrayType
+    internal abstract class ArrayType : IParsingResultExtended, IDemangleAsInner
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public ArrayType(IParsingResult type)
+        {
+            Type = type;
+        }
+
+        public IParsingResult Type { get; private set; }
+
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -23,7 +30,7 @@ namespace CxxDemangler.Parsers
                 Debug.Assert(number >= 0);
                 if (context.Parser.VerifyString("_"))
                 {
-                    type = Type.Parse(context);
+                    type = Parsers.Type.Parse(context);
                     if (type != null)
                     {
                         return new DimensionNumber(number, type);
@@ -39,7 +46,7 @@ namespace CxxDemangler.Parsers
             {
                 if (context.Parser.VerifyString("_"))
                 {
-                    type = Type.Parse(context);
+                    type = Parsers.Type.Parse(context);
                     if (type != null)
                     {
                         return new DimensionExpression(expression, type);
@@ -51,7 +58,7 @@ namespace CxxDemangler.Parsers
 
             if (context.Parser.VerifyString("_"))
             {
-                type = Type.Parse(context);
+                type = Parsers.Type.Parse(context);
                 if (type != null)
                 {
                     return new NoDimension(type);
@@ -62,38 +69,94 @@ namespace CxxDemangler.Parsers
             return null;
         }
 
-        internal class DimensionExpression : IParsingResult
+        public void Demangle(DemanglingContext context)
+        {
+            context.Inner.Push(this);
+            Type.Demangle(context);
+            if (context.Inner.Count > 0)
+            {
+                context.Inner.Pop().DemangleAsInner(context);
+            }
+        }
+
+        public void DemangleAsInner(DemanglingContext context)
+        {
+            bool innerIsArray = false;
+
+            while (context.Inner.Count > 0)
+            {
+                IDemangleAsInner inner = context.Inner.Pop();
+
+                innerIsArray = inner is ArrayType;
+                if (!innerIsArray)
+                {
+                    context.Writer.EnsureSpace();
+                    context.Writer.Append("(");
+                }
+                inner.DemangleAsInner(context);
+                if (!innerIsArray)
+                {
+                    context.Writer.Append(")");
+                }
+            }
+            if (!innerIsArray)
+            {
+                context.Writer.EnsureSpace();
+            }
+            context.Writer.Append("[");
+            DemangleSize(context);
+            context.Writer.Append("]");
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            return null;
+        }
+
+        protected abstract void DemangleSize(DemanglingContext context);
+
+        internal class DimensionExpression : ArrayType
         {
             public DimensionExpression(IParsingResult expression, IParsingResult type)
+                : base(type)
             {
                 Expression = expression;
-                Type = type;
             }
 
             public IParsingResult Expression { get; private set; }
-            public IParsingResult Type { get; private set; }
+
+            protected override void DemangleSize(DemanglingContext context)
+            {
+                Expression.Demangle(context);
+            }
         }
 
-        internal class DimensionNumber : IParsingResult
+        internal class DimensionNumber : ArrayType
         {
             public DimensionNumber(int number, IParsingResult type)
+                : base(type)
             {
                 Number = number;
-                Type = type;
             }
 
             public int Number { get; private set; }
-            public IParsingResult Type { get; private set; }
+
+            protected override void DemangleSize(DemanglingContext context)
+            {
+                context.Writer.Append($"{Number}");
+            }
         }
 
-        internal class NoDimension : IParsingResult
+        internal class NoDimension : ArrayType
         {
             public NoDimension(IParsingResult type)
+                : base(type)
             {
-                Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
+            protected override void DemangleSize(DemanglingContext context)
+            {
+            }
         }
     }
 }

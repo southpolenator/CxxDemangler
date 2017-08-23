@@ -54,5 +54,13 @@
             context.Rewind(rewind);
             return null;
         }
+
+        public void Demangle(DemanglingContext context)
+        {
+            // TODO: this needs more finesse.
+            IParsingResult arg = context.Stack.GetFunctionArg(Scope);
+
+            arg?.Demangle(context);
+        }
     }
 }

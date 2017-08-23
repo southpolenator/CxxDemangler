@@ -11,9 +11,9 @@
     //         ::= <substitution>
     internal class Type
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult type = BuiltinType.Parse(context);
+            IParsingResultExtended type = BuiltinType.Parse(context);
 
             if (type != null)
             {
@@ -59,7 +59,7 @@
             type = TemplateTemplateParam.Parse(context);
             if (type != null)
             {
-                IParsingResult arguments = TemplateArgs.Parse(context);
+                TemplateArgs arguments = TemplateArgs.Parse(context);
 
                 if (arguments == null)
                 {
@@ -159,7 +159,7 @@
                     return null;
                 }
 
-                IParsingResult arguments = TemplateArgs.Parse(context);
+                TemplateArgs arguments = TemplateArgs.Parse(context);
 
                 type = Parse(context);
                 return AddToSubstitutionTable(context, new VendorExtension(name, arguments, type));
@@ -179,120 +179,284 @@
             return null;
         }
 
-        private static IParsingResult AddToSubstitutionTable(ParsingContext context, IParsingResult result)
+        private static IParsingResultExtended AddToSubstitutionTable(ParsingContext context, IParsingResultExtended result)
         {
             context.SubstitutionTable.Add(result);
             return result;
         }
 
-        internal class Complex : IParsingResult
+        internal class Complex : IParsingResultExtended
         {
-            public Complex(IParsingResult type)
+            public Complex(IParsingResultExtended type)
             {
                 Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append(" complex");
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class Imaginary : IParsingResult
+        internal class Imaginary : IParsingResultExtended
         {
-            public Imaginary(IParsingResult type)
+            public Imaginary(IParsingResultExtended type)
             {
                 Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append(" imaginary");
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class LvalueRef : IParsingResult
+        internal class LvalueRef : IParsingResultExtended, IDemangleAsInner
         {
-            public LvalueRef(IParsingResult type)
+            public LvalueRef(IParsingResultExtended type)
             {
                 Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Inner.Push(this);
+                Type.Demangle(context);
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public void DemangleAsInner(DemanglingContext context)
+            {
+                context.Writer.Append("&");
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class PackExtension : IParsingResult
+        internal class PointerTo : IParsingResultExtended, IDemangleAsInner
         {
-            public PackExtension(IParsingResult type)
+            public PointerTo(IParsingResultExtended type)
             {
                 Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Inner.Push(this);
+                Type.Demangle(context);
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public void DemangleAsInner(DemanglingContext context)
+            {
+                context.Writer.Append("&");
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class PointerTo : IParsingResult
+        internal class RvalueRef : IParsingResultExtended, IDemangleAsInner
         {
-            public PointerTo(IParsingResult type)
+            public RvalueRef(IParsingResultExtended type)
             {
                 Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
-        }
+            public IParsingResultExtended Type { get; private set; }
 
-        internal class RvalueRef : IParsingResult
-        {
-            public RvalueRef(IParsingResult type)
+            public void Demangle(DemanglingContext context)
             {
-                Type = type;
+                context.Inner.Push(this);
+                Type.Demangle(context);
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
             }
 
-            public IParsingResult Type { get; private set; }
+            public void DemangleAsInner(DemanglingContext context)
+            {
+                context.Writer.Append("&");
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class QualifiedBuiltin : IParsingResult
+        internal class QualifiedBuiltin : IParsingResultExtended
         {
-            public QualifiedBuiltin(CvQualifiers qualifiers, IParsingResult type)
+            public QualifiedBuiltin(CvQualifiers qualifiers, IParsingResultExtended type)
             {
                 CvQualifiers = qualifiers;
                 Type = type;
             }
 
             public CvQualifiers CvQualifiers { get; private set; }
-            public IParsingResult Type { get; private set; }
+
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Inner.Push(CvQualifiers);
+                Type.Demangle(context);
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class Qualified : IParsingResult
+        internal class Qualified : IParsingResultExtended
         {
-            public Qualified(CvQualifiers qualifiers, IParsingResult type)
+            public Qualified(CvQualifiers qualifiers, IParsingResultExtended type)
             {
                 CvQualifiers = qualifiers;
                 Type = type;
             }
 
             public CvQualifiers CvQualifiers { get; private set; }
-            public IParsingResult Type { get; private set; }
+
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Inner.Push(CvQualifiers);
+                Type.Demangle(context);
+                if (context.Inner.Count > 0)
+                {
+                    context.Inner.Pop().DemangleAsInner(context);
+                }
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class TemplateTemplate : IParsingResult
+        internal class TemplateTemplate : IParsingResultExtended
         {
-            public TemplateTemplate(IParsingResult type, IParsingResult arguments)
+            public TemplateTemplate(IParsingResultExtended type, TemplateArgs arguments)
             {
                 Type = type;
                 Arguments = arguments;
             }
 
-            public IParsingResult Arguments { get; private set; }
-            public IParsingResult Type { get; private set; }
+            public TemplateArgs Arguments { get; private set; }
+
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                Arguments.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Arguments;
+            }
         }
 
-        internal class VendorExtension : IParsingResult
+        internal class PackExtension : IParsingResultExtended
         {
-            public VendorExtension(IParsingResult name, IParsingResult arguments, IParsingResult type)
+            public PackExtension(IParsingResultExtended type)
+            {
+                Type = type;
+            }
+
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append("...");
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
+        }
+
+        internal class VendorExtension : IParsingResultExtended
+        {
+            public VendorExtension(IParsingResult name, TemplateArgs arguments, IParsingResult type)
             {
                 Name = name;
                 Arguments = arguments;
                 Type = type;
             }
 
-            public IParsingResult Arguments { get; private set; }
+            public TemplateArgs Arguments { get; private set; }
+
             public IParsingResult Name { get; private set; }
+
             public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append(" ");
+                Name.Demangle(context);
+                Arguments?.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Arguments;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CxxDemangler.Parsers
 {
-    internal class StandardBuiltinType : BuiltinType
+    internal class StandardBuiltinType : BuiltinType, IParsingResultExtended
     {
         public enum Values
         {
@@ -117,6 +117,16 @@
         public static bool StartsWith(ParsingContext context)
         {
             return DictionaryParser<Values>.StartsWith(context);
+        }
+
+        public override void Demangle(DemanglingContext context)
+        {
+            DictionaryParser<Values>.Demangle(Value, context);
+        }
+
+        public override TemplateArgs GetTemplateArgs()
+        {
+            return null;
         }
     }
 }

@@ -6,7 +6,7 @@
     //                 ::= D0 # deleting destructor
     //                 ::= D1 # complete object destructor
     //                 ::= D2 # base object destructor
-    internal class CtorDtorName : IParsingResult
+    internal class CtorDtorName : IParsingResultExtended
     {
         public enum Values
         {
@@ -42,7 +42,7 @@
 
         public Values Value { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             Values value;
 
@@ -57,6 +57,16 @@
         public static bool StartsWith(ParsingContext context)
         {
             return DictionaryParser<Values>.StartsWith(context);
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            DictionaryParser<Values>.Demangle(Value, context);
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            return null;
         }
     }
 }

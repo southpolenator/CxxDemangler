@@ -1,6 +1,6 @@
 ﻿namespace CxxDemangler.Parsers
 {
-    internal class SimpleOperatorName : IParsingResult
+    internal class SimpleOperatorName : IParsingResultExtended
     {
         public SimpleOperatorName(Values value)
         {
@@ -153,7 +153,7 @@
             Question,
         }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             Values value;
 
@@ -168,6 +168,16 @@
         public static bool StartsWith(ParsingContext context)
         {
             return DictionaryParser<Values>.StartsWith(context);
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            DictionaryParser<Values>.Demangle(Value, context);
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            return null;
         }
     }
 }

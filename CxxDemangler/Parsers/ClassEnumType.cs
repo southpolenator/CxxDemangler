@@ -6,9 +6,9 @@
     //                   ::= Te<name>  # dependent elaborated type specifier using 'enum'
     internal class ClassEnumType
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult name = Name.Parse(context);
+            IParsingResultExtended name = Name.Parse(context);
 
             if (name != null)
             {
@@ -49,34 +49,67 @@
             return null;
         }
 
-        internal class ElaboratedEnum : IParsingResult
+        internal class ElaboratedEnum : IParsingResultExtended
         {
-            public ElaboratedEnum(IParsingResult name)
+            public ElaboratedEnum(IParsingResultExtended name)
             {
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("enum ");
+                Name.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
 
-        internal class ElaboratedStruct : IParsingResult
+        internal class ElaboratedStruct : IParsingResultExtended
         {
-            public ElaboratedStruct(IParsingResult name)
+            public ElaboratedStruct(IParsingResultExtended name)
             {
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("class ");
+                Name.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
 
-        internal class ElaboratedUnion : IParsingResult
+        internal class ElaboratedUnion : IParsingResultExtended
         {
-            public ElaboratedUnion(IParsingResult name)
+            public ElaboratedUnion(IParsingResultExtended name)
             {
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("union ");
+                Name.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
     }
 }

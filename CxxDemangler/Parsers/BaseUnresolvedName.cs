@@ -47,6 +47,12 @@
             public IParsingResult Arguments { get; private set; }
 
             public IParsingResult OperatorName { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                OperatorName.Demangle(context);
+                Arguments?.Demangle(context);
+            }
         }
     }
 }

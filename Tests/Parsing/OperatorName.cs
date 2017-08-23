@@ -33,7 +33,7 @@ namespace CxxDemangler.Tests.Parsing
         {
             Verify("v33Foo...",
                 new Parsers.OperatorName.VendorExtension(
-                    new Parsers.SourceName.Identifier("Foo")));
+                    3, new Parsers.SourceName.Identifier("Foo")));
         }
 
         [TestMethod]

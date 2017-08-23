@@ -45,6 +45,11 @@
             }
 
             public int Offset { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append($"{{offset({Offset})}}");
+            }
         }
 
         internal class Virtual : IParsingResult
@@ -58,6 +63,11 @@
             public int Offset { get; private set; }
 
             public int VirtualOffset { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append($"{{virtual offset({Offset}, {VirtualOffset})}}");
+            }
         }
     }
 }

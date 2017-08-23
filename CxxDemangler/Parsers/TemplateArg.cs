@@ -58,6 +58,11 @@ namespace CxxDemangler.Parsers
             }
 
             public IReadOnlyList<IParsingResult> Arguments { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Arguments.Demangle(context);
+            }
         }
     }
 }

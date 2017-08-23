@@ -31,5 +31,12 @@ namespace CxxDemangler.Parsers
             context.Rewind(rewind);
             return null;
         }
+
+        public void Demangle(DemanglingContext context)
+        {
+            context.Writer.Append("(");
+            Expressions.Demangle(context);
+            context.Writer.Append(")");
+        }
     }
 }

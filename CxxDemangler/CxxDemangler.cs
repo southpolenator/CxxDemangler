@@ -9,22 +9,18 @@ namespace CxxDemangler
 
         public static string Demangle(string input)
         {
-            IParsingResult result = Parse(input);
+            ParsingContext parsingContext = CreateContext(input);
+            IParsingResult result = Parse(parsingContext);
 
             if (result != null)
             {
-                // TODO:
-                return result.ToString();
+                DemanglingContext demanglingContext = DemanglingContext.Create(parsingContext);
+
+                result.Demangle(demanglingContext);
+                return demanglingContext.Writer.Text;
             }
 
             return input;
-        }
-
-        internal static IParsingResult Parse(string input)
-        {
-            ParsingContext context = CreateContext(input);
-
-            return Parse(context);
         }
 
         internal static IParsingResult Parse(ParsingContext context)

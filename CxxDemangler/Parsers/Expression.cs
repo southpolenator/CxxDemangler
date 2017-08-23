@@ -390,406 +390,6 @@ namespace CxxDemangler.Parsers
             return null;
         }
 
-        internal class PrefixDec : IParsingResult
-        {
-            public PrefixDec(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class TypeIdExpression : IParsingResult
-        {
-            public TypeIdExpression(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class TypeIdType : IParsingResult
-        {
-            public TypeIdType(IParsingResult type)
-            {
-                Type = type;
-            }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class SizeOfType : IParsingResult
-        {
-            public SizeOfType(IParsingResult type)
-            {
-                Type = type;
-            }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class SizeOfExpression : IParsingResult
-        {
-            public SizeOfExpression(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class AlignOfType : IParsingResult
-        {
-            public AlignOfType(IParsingResult type)
-            {
-                Type = type;
-            }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class AlignOfExpression : IParsingResult
-        {
-            public AlignOfExpression(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class Noexcept : IParsingResult
-        {
-            public Noexcept(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class PrefixInc : IParsingResult
-        {
-            public PrefixInc(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class BracedInitList : IParsingResult
-        {
-            public BracedInitList(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class Throw : IParsingResult
-        {
-            public Throw(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class PackExpansion : IParsingResult
-        {
-            public PackExpansion(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class Member : IParsingResult
-        {
-            public Member(IParsingResult expression, IParsingResult name)
-            {
-                Expression = expression;
-                Name = name;
-            }
-
-            public IParsingResult Expression { get; private set; }
-            public IParsingResult Name { get; private set; }
-        }
-
-        internal class DeferMember : IParsingResult
-        {
-            public DeferMember(IParsingResult expression, IParsingResult name)
-            {
-                Expression = expression;
-                Name = name;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Name { get; private set; }
-        }
-
-        internal class PointerToMember : IParsingResult
-        {
-            public PointerToMember(IParsingResult expression, IParsingResult expression2)
-            {
-                Expression = expression;
-                Expression2 = expression2;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Expression2 { get; private set; }
-        }
-
-        internal class SizeofCapturedTemplatePack : IParsingResult
-        {
-            public SizeofCapturedTemplatePack(IReadOnlyList<IParsingResult> arguments)
-            {
-                Arguments = arguments;
-            }
-
-            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
-        }
-
-        internal class Call : IParsingResult
-        {
-            public Call(IParsingResult expression, IReadOnlyList<IParsingResult> arguments)
-            {
-                Expression = expression;
-                Arguments = arguments;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
-        }
-
-        internal class ConversionMany : IParsingResult
-        {
-            public ConversionMany(IParsingResult type, IReadOnlyList<IParsingResult> expressions)
-            {
-                Type = type;
-                Expressions = expressions;
-            }
-
-            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class ConversionBraced : IParsingResult
-        {
-            public ConversionBraced(IParsingResult type, IReadOnlyList<IParsingResult> expressions)
-            {
-                Type = type;
-                Expressions = expressions;
-            }
-
-            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class ConversionOne : IParsingResult
-        {
-            public ConversionOne(IParsingResult type, IParsingResult expression)
-            {
-                Type = type;
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class DynamicCast : IParsingResult
-        {
-            public DynamicCast(IParsingResult type, IParsingResult expression)
-            {
-                Type = type;
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class StaticCast : IParsingResult
-        {
-            public StaticCast(IParsingResult type, IParsingResult expression)
-            {
-                Type = type;
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class ConstCast : IParsingResult
-        {
-            public ConstCast(IParsingResult type, IParsingResult expression)
-            {
-                Type = type;
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class ReinterpretCast : IParsingResult
-        {
-            public ReinterpretCast(IParsingResult type, IParsingResult expression)
-            {
-                Type = type;
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class SizeOfTemplatepack : IParsingResult
-        {
-            public SizeOfTemplatepack(IParsingResult parameter)
-            {
-                Parameter = parameter;
-            }
-
-            public IParsingResult Parameter { get; private set; }
-        }
-
-        internal class SizeOfFunctionPack : IParsingResult
-        {
-            public SizeOfFunctionPack(IParsingResult parameter)
-            {
-                Parameter = parameter;
-            }
-
-            public IParsingResult Parameter { get; private set; }
-        }
-
-        internal class Retrow : IParsingResult
-        {
-        }
-
-        internal class GlobalNew : IParsingResult
-        {
-            public GlobalNew(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
-            {
-                Expressions = expressions;
-                Type = type;
-                Initializer = initializer;
-            }
-
-            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
-
-            public IParsingResult Initializer { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class New : IParsingResult
-        {
-            public New(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
-            {
-                Expressions = expressions;
-                Type = type;
-                Initializer = initializer;
-            }
-
-            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
-
-            public IParsingResult Initializer { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class GlobalNewArray : IParsingResult
-        {
-            public GlobalNewArray(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
-            {
-                Expressions = expressions;
-                Type = type;
-                Initializer = initializer;
-            }
-
-            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
-
-            public IParsingResult Initializer { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class NewArray : IParsingResult
-        {
-            public NewArray(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
-            {
-                Expressions = expressions;
-                Type = type;
-                Initializer = initializer;
-            }
-
-            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
-
-            public IParsingResult Initializer { get; private set; }
-
-            public IParsingResult Type { get; private set; }
-        }
-
-        internal class Delete : IParsingResult
-        {
-            public Delete(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class GlobalDelete : IParsingResult
-        {
-            public GlobalDelete(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class GlobalDeleteArray : IParsingResult
-        {
-            public GlobalDeleteArray(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
-        internal class DeleteArray : IParsingResult
-        {
-            public DeleteArray(IParsingResult expression)
-            {
-                Expression = expression;
-            }
-
-            public IParsingResult Expression { get; private set; }
-        }
-
         internal class Unary : IParsingResult
         {
             public Unary(IParsingResult operatorName, IParsingResult expression)
@@ -801,6 +401,13 @@ namespace CxxDemangler.Parsers
             public IParsingResult OperatorName { get; private set; }
 
             public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                OperatorName.Demangle(context);
+                context.Writer.Append(" ");
+                Expression.Demangle(context);
+            }
         }
 
         internal class Binary : IParsingResult
@@ -817,6 +424,17 @@ namespace CxxDemangler.Parsers
             public IParsingResult FirstExpression { get; private set; }
 
             public IParsingResult SecondExpression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("(");
+                FirstExpression.Demangle(context);
+                context.Writer.Append(")");
+                OperatorName.Demangle(context);
+                context.Writer.Append("(");
+                SecondExpression.Demangle(context);
+                context.Writer.Append(")");
+            }
         }
 
         internal class Ternary : IParsingResult
@@ -836,6 +454,690 @@ namespace CxxDemangler.Parsers
             public IParsingResult SecondExpression { get; private set; }
 
             public IParsingResult ThirdExpression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                SimpleOperatorName question = OperatorName as SimpleOperatorName;
+
+                if (question.Value == SimpleOperatorName.Values.Question)
+                {
+                    FirstExpression.Demangle(context);
+                    context.Writer.Append(" ? ");
+                    SecondExpression.Demangle(context);
+                    context.Writer.Append(" : ");
+                    ThirdExpression.Demangle(context);
+                }
+                else
+                {
+                    // Nonsensical ternary operator? Just print it like a function call,
+                    // I suppose...
+                    //
+                    // TODO: should we detect and reject this during parsing?
+                    OperatorName.Demangle(context);
+                    context.Writer.Append("(");
+                    FirstExpression.Demangle(context);
+                    context.Writer.Append(", ");
+                    SecondExpression.Demangle(context);
+                    context.Writer.Append(", ");
+                    ThirdExpression.Demangle(context);
+                    context.Writer.Append(")");
+                }
+            }
+        }
+
+        internal class PrefixInc : IParsingResult
+        {
+            public PrefixInc(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("++");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class PrefixDec : IParsingResult
+        {
+            public PrefixDec(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("--");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class Call : IParsingResult
+        {
+            public Call(IParsingResult expression, IReadOnlyList<IParsingResult> arguments)
+            {
+                Expression = expression;
+                Arguments = arguments;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("(");
+                Expression.Demangle(context);
+                context.Writer.Append(")(");
+                Arguments.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class ConversionOne : IParsingResult
+        {
+            public ConversionOne(IParsingResult type, IParsingResult expression)
+            {
+                Type = type;
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append("(");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class ConversionMany : IParsingResult
+        {
+            public ConversionMany(IParsingResult type, IReadOnlyList<IParsingResult> expressions)
+            {
+                Type = type;
+                Expressions = expressions;
+            }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append("(");
+                Expressions.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class ConversionBraced : IParsingResult
+        {
+            public ConversionBraced(IParsingResult type, IReadOnlyList<IParsingResult> expressions)
+            {
+                Type = type;
+                Expressions = expressions;
+            }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Type.Demangle(context);
+                context.Writer.Append("{");
+                Expressions.Demangle(context);
+                context.Writer.Append("}");
+            }
+        }
+
+        internal class BracedInitList : IParsingResult
+        {
+            public BracedInitList(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("{");
+                Expression.Demangle(context);
+                context.Writer.Append("}");
+            }
+        }
+
+        internal class New : IParsingResult
+        {
+            public New(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            {
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
+            }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("new (");
+                Expressions.Demangle(context);
+                context.Writer.Append(") ");
+                Type.Demangle(context);
+                Initializer?.Demangle(context);
+            }
+        }
+
+        internal class GlobalNew : IParsingResult
+        {
+            public GlobalNew(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            {
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
+            }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("::new (");
+                Expressions.Demangle(context);
+                context.Writer.Append(") ");
+                Type.Demangle(context);
+                Initializer?.Demangle(context);
+            }
+        }
+
+        internal class NewArray : IParsingResult
+        {
+            public NewArray(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            {
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
+            }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("new[] (");
+                Expressions.Demangle(context);
+                context.Writer.Append(") ");
+                Type.Demangle(context);
+                Initializer?.Demangle(context);
+            }
+        }
+
+        internal class GlobalNewArray : IParsingResult
+        {
+            public GlobalNewArray(IReadOnlyList<IParsingResult> expressions, IParsingResult type, IParsingResult initializer = null)
+            {
+                Expressions = expressions;
+                Type = type;
+                Initializer = initializer;
+            }
+
+            public IReadOnlyList<IParsingResult> Expressions { get; private set; }
+
+            public IParsingResult Initializer { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("::new[] (");
+                Expressions.Demangle(context);
+                context.Writer.Append(") ");
+                Type.Demangle(context);
+                Initializer?.Demangle(context);
+            }
+        }
+
+        internal class Delete : IParsingResult
+        {
+            public Delete(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("delete ");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class GlobalDelete : IParsingResult
+        {
+            public GlobalDelete(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("::delete ");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class DeleteArray : IParsingResult
+        {
+            public DeleteArray(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("delete[] ");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class GlobalDeleteArray : IParsingResult
+        {
+            public GlobalDeleteArray(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("::delete[] ");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class DynamicCast : IParsingResult
+        {
+            public DynamicCast(IParsingResult type, IParsingResult expression)
+            {
+                Type = type;
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("dynamic_cast<");
+                Type.Demangle(context);
+                context.Writer.Append(">(");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class StaticCast : IParsingResult
+        {
+            public StaticCast(IParsingResult type, IParsingResult expression)
+            {
+                Type = type;
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("static_cast<");
+                Type.Demangle(context);
+                context.Writer.Append(">(");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class ConstCast : IParsingResult
+        {
+            public ConstCast(IParsingResult type, IParsingResult expression)
+            {
+                Type = type;
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("const_cast<");
+                Type.Demangle(context);
+                context.Writer.Append(">(");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class ReinterpretCast : IParsingResult
+        {
+            public ReinterpretCast(IParsingResult type, IParsingResult expression)
+            {
+                Type = type;
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("reinterpret_cast<");
+                Type.Demangle(context);
+                context.Writer.Append(">(");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class TypeIdType : IParsingResult
+        {
+            public TypeIdType(IParsingResult type)
+            {
+                Type = type;
+            }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("typeid (");
+                Type.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class TypeIdExpression : IParsingResult
+        {
+            public TypeIdExpression(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("typeid (");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class SizeOfType : IParsingResult
+        {
+            public SizeOfType(IParsingResult type)
+            {
+                Type = type;
+            }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("sizeof (");
+                Type.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class SizeOfExpression : IParsingResult
+        {
+            public SizeOfExpression(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("sizeof (");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class AlignOfType : IParsingResult
+        {
+            public AlignOfType(IParsingResult type)
+            {
+                Type = type;
+            }
+
+            public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("alignof (");
+                Type.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class AlignOfExpression : IParsingResult
+        {
+            public AlignOfExpression(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("alignof (");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class Noexcept : IParsingResult
+        {
+            public Noexcept(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("noexcept (");
+                Expression.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class Member : IParsingResult
+        {
+            public Member(IParsingResult expression, IParsingResult name)
+            {
+                Expression = expression;
+                Name = name;
+            }
+
+            public IParsingResult Expression { get; private set; }
+            public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Expression.Demangle(context);
+                context.Writer.Append(".");
+                Name.Demangle(context);
+            }
+        }
+
+        internal class DeferMember : IParsingResult
+        {
+            public DeferMember(IParsingResult expression, IParsingResult name)
+            {
+                Expression = expression;
+                Name = name;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Expression.Demangle(context);
+                context.Writer.Append("->");
+                Name.Demangle(context);
+            }
+        }
+
+        internal class PointerToMember : IParsingResult
+        {
+            public PointerToMember(IParsingResult expression, IParsingResult expression2)
+            {
+                Expression = expression;
+                Expression2 = expression2;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public IParsingResult Expression2 { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Expression.Demangle(context);
+                context.Writer.Append(".*");
+                Expression2.Demangle(context);
+            }
+        }
+
+        internal class SizeOfTemplatepack : IParsingResult
+        {
+            public SizeOfTemplatepack(IParsingResult parameter)
+            {
+                Parameter = parameter;
+            }
+
+            public IParsingResult Parameter { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("sizeof...(");
+                Parameter.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class SizeOfFunctionPack : IParsingResult
+        {
+            public SizeOfFunctionPack(IParsingResult parameter)
+            {
+                Parameter = parameter;
+            }
+
+            public IParsingResult Parameter { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("sizeof...(");
+                Parameter.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class SizeofCapturedTemplatePack : IParsingResult
+        {
+            public SizeofCapturedTemplatePack(IReadOnlyList<IParsingResult> arguments)
+            {
+                Arguments = arguments;
+            }
+
+            public IReadOnlyList<IParsingResult> Arguments { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("sizeof...(");
+                Arguments.Demangle(context);
+                context.Writer.Append(")");
+            }
+        }
+
+        internal class PackExpansion : IParsingResult
+        {
+            public PackExpansion(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Expression.Demangle(context);
+                context.Writer.Append("...");
+            }
+        }
+
+        internal class Throw : IParsingResult
+        {
+            public Throw(IParsingResult expression)
+            {
+                Expression = expression;
+            }
+
+            public IParsingResult Expression { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("throw ");
+                Expression.Demangle(context);
+            }
+        }
+
+        internal class Retrow : IParsingResult
+        {
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("throw");
+            }
         }
     }
 }

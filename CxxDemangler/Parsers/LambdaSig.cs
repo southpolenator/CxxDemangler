@@ -27,5 +27,10 @@ namespace CxxDemangler.Parsers
             }
             return null;
         }
+
+        public void Demangle(DemanglingContext context)
+        {
+            ArgumentTypes.Demangle(context);
+        }
     }
 }

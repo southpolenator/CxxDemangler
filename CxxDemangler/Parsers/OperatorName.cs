@@ -52,9 +52,9 @@
     //                 ::= v <digit> <source-name>	# vendor extended operator
     internal class OperatorName
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult simple = SimpleOperatorName.Parse(context);
+            IParsingResultExtended simple = SimpleOperatorName.Parse(context);
 
             if (simple != null)
             {
@@ -65,7 +65,7 @@
 
             if (context.Parser.VerifyString("cv"))
             {
-                IParsingResult type = Type.Parse(context);
+                IParsingResultExtended type = Type.Parse(context);
 
                 if (type == null)
                 {
@@ -78,7 +78,7 @@
 
             if (context.Parser.VerifyString("li"))
             {
-                IParsingResult name = SourceName.Parse(context);
+                IParsingResultExtended name = SourceName.Parse(context);
 
                 if (name == null)
                 {
@@ -99,7 +99,7 @@
 
                 int arity = context.Parser.Peek - '0';
                 context.Parser.Position++;
-                IParsingResult name = SourceName.Parse(context);
+                IParsingResultExtended name = SourceName.Parse(context);
 
                 if (name == null)
                 {
@@ -107,7 +107,7 @@
                     return null;
                 }
 
-                return new VendorExtension(name);
+                return new VendorExtension(arity, name);
             }
 
             return null;
@@ -120,34 +120,76 @@
             return peek == 'c' || peek == 'l' || peek == 'v' || SimpleOperatorName.StartsWith(context);
         }
 
-        internal class Cast : IParsingResult
+        internal class Cast : IParsingResultExtended
         {
-            public Cast(IParsingResult type)
+            public Cast(IParsingResultExtended type)
             {
                 Type = type;
             }
 
-            public IParsingResult Type { get; private set; }
+            public IParsingResultExtended Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                TemplateArgs args = Type.GetTemplateArgs();
+                context.Writer.EnsureSpace();
+                if (args != null)
+                {
+                    context.Stack.Push(args);
+                }
+                Type.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Type.GetTemplateArgs();
+            }
         }
 
-        internal class Literal : IParsingResult
+        internal class Literal : IParsingResultExtended
         {
-            public Literal(IParsingResult name)
+            public Literal(IParsingResultExtended name)
             {
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Name.Demangle(context);
+                context.Writer.Append("::operator \"\"");
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
 
-        internal class VendorExtension : IParsingResult
+        internal class VendorExtension : IParsingResultExtended
         {
-            public VendorExtension(IParsingResult name)
+            public VendorExtension(int arity, IParsingResultExtended name)
             {
+                Arity = arity;
                 Name = name;
             }
 
-            public IParsingResult Name { get; private set; }
+            public int Arity { get; private set; }
+
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                // TODO: no idea how this should be demangled...
+                Name.Demangle(context);
+                context.Writer.Append($"::operator {Arity}");
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
     //              := Z <function encoding> E s [<discriminator>]
     internal class LocalName
     {
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -13,7 +13,8 @@
                 return null;
             }
 
-            IParsingResult encoding = Encoding.Parse(context), name;
+            IParsingResult encoding = Encoding.Parse(context);
+            IParsingResultExtended name;
             Discriminator discriminator;
 
             if (encoding == null || !context.Parser.VerifyString("E"))
@@ -53,9 +54,9 @@
             return null;
         }
 
-        internal class Default : IParsingResult
+        internal class Default : IParsingResultExtended
         {
-            public Default(IParsingResult encoding, int? param, IParsingResult name)
+            public Default(IParsingResult encoding, int? param, IParsingResultExtended name)
             {
                 Encoding = encoding;
                 Param = param;
@@ -64,14 +65,25 @@
 
             public IParsingResult Encoding { get; private set; }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
 
             public int? Param { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                // TODO: We don't use Name and Param?
+                Encoding.Demangle(context);
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name.GetTemplateArgs();
+            }
         }
 
-        internal class Relative : IParsingResult
+        internal class Relative : IParsingResultExtended
         {
-            public Relative(IParsingResult encoding, IParsingResult name, Discriminator discriminator)
+            public Relative(IParsingResult encoding, IParsingResultExtended name, Discriminator discriminator)
             {
                 Encoding = encoding;
                 Name = name;
@@ -82,7 +94,27 @@
 
             public IParsingResult Encoding { get; private set; }
 
-            public IParsingResult Name { get; private set; }
+            public IParsingResultExtended Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                Encoding.Demangle(context);
+                if (Name != null)
+                {
+                    context.Writer.Append("::");
+                    Name.Demangle(context);
+                }
+                else
+                {
+                    // No name means that this is the symbol for a string literal.
+                    context.Writer.Append("::string literal");
+                }
+            }
+
+            public TemplateArgs GetTemplateArgs()
+            {
+                return Name?.GetTemplateArgs();
+            }
         }
     }
 }

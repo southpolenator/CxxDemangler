@@ -1,7 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
     // <closure-type-name> ::= Ul <lambda-sig> E [ <nonnegative number> ] _
-    internal class ClosureTypeName : IParsingResult
+    internal class ClosureTypeName : IParsingResultExtended
     {
         public ClosureTypeName(IParsingResult signature, int? number)
         {
@@ -13,7 +13,7 @@
 
         public int? Number { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
 
@@ -39,6 +39,20 @@
             }
 
             return new ClosureTypeName(signature, number);
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            int number = Number.HasValue ? Number.Value + 1 : 0;
+
+            context.Writer.Append("{lambda(");
+            Signature.Demangle(context);
+            context.Writer.Append($")#{number}}}");
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            return null;
         }
     }
 }

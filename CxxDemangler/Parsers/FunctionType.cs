@@ -1,7 +1,7 @@
 ﻿namespace CxxDemangler.Parsers
 {
     // <function-type> ::= [<CV-qualifiers>] [Dx] F [Y] <bare-function-type> [<ref-qualifier>] E
-    internal class FunctionType : IParsingResult
+    internal class FunctionType : IParsingResultExtended
     {
         public FunctionType(BareFunctionType bareType, CvQualifiers cvQualifiers, RefQualifier refQualifier, bool transactionSafe, bool externC)
         {
@@ -22,7 +22,7 @@
 
         public RefQualifier RefQualifier { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
             RewindState rewind = context.RewindState;
             CvQualifiers cvQualifiers = CvQualifiers.Parse(context);
@@ -45,6 +45,20 @@
             }
 
             context.Rewind(rewind);
+            return null;
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            // TODO: transactions safety?
+            // TODO: extern C?
+            BareType.Demangle(context);
+            CvQualifiers?.Demangle(context);
+            // TODO: ref_qualifier?
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
             return null;
         }
     }

@@ -2,33 +2,43 @@
 {
     // <template-template-param> ::= <template-param>
     //                           ::= <substitution>
-    internal class TemplateTemplateParam : IParsingResult
+    internal class TemplateTemplateParam : IParsingResultExtended
     {
-        public TemplateTemplateParam(IParsingResult parameter)
+        public TemplateTemplateParam(IParsingResultExtended parameter)
         {
             Parameter = parameter;
         }
 
-        public IParsingResult Parameter { get; private set; }
+        public IParsingResultExtended Parameter { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult substitution = Substitution.Parse(context);
+            IParsingResultExtended substitution = Substitution.Parse(context);
 
             if (substitution != null)
             {
                 return substitution;
             }
 
-            IParsingResult parameter = TemplateParam.Parse(context);
+            IParsingResultExtended parameter = TemplateParam.Parse(context);
 
             if (parameter != null)
             {
-                IParsingResult result = new TemplateTemplateParam(parameter);
+                IParsingResultExtended result = new TemplateTemplateParam(parameter);
                 context.SubstitutionTable.Add(result);
                 return result;
             }
             return null;
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            Parameter.Demangle(context);
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            return Parameter.GetTemplateArgs();
         }
     }
 }

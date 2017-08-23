@@ -34,15 +34,21 @@ namespace CxxDemangler.Tests
 
         internal void Verify(string input, IParsingResult expected, string endsWith = "...")
         {
-            ParsingContext context = CreateContext(input);
-            IParsingResult actual = Parse(context);
+            ParsingContext parsingContext = CreateContext(input);
+            IParsingResult result = Parse(parsingContext);
 
-            CompareParsingResult(expected, actual);
+            CompareParsingResult(expected, result);
             Assert.IsTrue(string.IsNullOrEmpty(endsWith) || input.EndsWith(endsWith));
             if (!string.IsNullOrEmpty(endsWith))
             {
-                Assert.AreEqual(input.Length - endsWith.Length, context.Parser.Position, "Not everything was parsed");
+                Assert.AreEqual(input.Length - endsWith.Length, parsingContext.Parser.Position, "Not everything was parsed");
             }
+
+            // Demangle to verify that there are no exceptions
+            DemanglingContext demanglingContext = DemanglingContext.Create(parsingContext);
+
+            result?.Demangle(demanglingContext);
+            System.Console.WriteLine(demanglingContext.Writer.Text);
         }
 
         protected static void CompareParsingResult(object expected, object actual, string path = "")
@@ -61,10 +67,6 @@ namespace CxxDemangler.Tests
                 foreach (PropertyInfo property in type.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public))
                 {
                     CompareParsingResult(property.GetValue(expected), property.GetValue(actual), $"{path}\n{type.FullName}.{property.Name}");
-                }
-                foreach (FieldInfo field in type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public))
-                {
-                    CompareParsingResult(field.GetValue(expected), field.GetValue(actual), $"{path}\n{type.FullName}.{field.Name}");
                 }
             }
             else if (typeof(IEnumerable<IParsingResult>).IsAssignableFrom(type))

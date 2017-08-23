@@ -134,6 +134,13 @@
             }
 
             public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("{vtable(");
+                Type.Demangle(context);
+                context.Writer.Append(");");
+            }
         }
 
         internal class Vtt : IParsingResult
@@ -144,6 +151,13 @@
             }
 
             public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("{vtt(");
+                Type.Demangle(context);
+                context.Writer.Append(");");
+            }
         }
 
         internal class TypeInfo : IParsingResult
@@ -154,6 +168,12 @@
             }
 
             public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("typeinfo for ");
+                Type.Demangle(context);
+            }
         }
 
         internal class TypeInfoName : IParsingResult
@@ -164,6 +184,34 @@
             }
 
             public IParsingResult Type { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("typeinfo name for ");
+                Type.Demangle(context);
+            }
+        }
+
+        internal class VirtualOverrideThunk : IParsingResult
+        {
+            public VirtualOverrideThunk(IParsingResult offset, IParsingResult encoding)
+            {
+                Offset = offset;
+                Encoding = encoding;
+            }
+
+            public IParsingResult Encoding { get; private set; }
+
+            public IParsingResult Offset { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("{virtual override thunk(");
+                Offset.Demangle(context);
+                context.Writer.Append(", ");
+                Encoding.Demangle(context);
+                context.Writer.Append(")}");
+            }
         }
 
         internal class VirtualOverrideThunkCovariant : IParsingResult
@@ -180,6 +228,17 @@
             public IParsingResult ResultOffset { get; private set; }
 
             public IParsingResult ThisOffset { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("{virtual override thunk(");
+                ThisOffset.Demangle(context);
+                context.Writer.Append(", ");
+                ResultOffset.Demangle(context);
+                context.Writer.Append(", ");
+                Encoding.Demangle(context);
+                context.Writer.Append(")}");
+            }
         }
 
         internal class Guard : IParsingResult
@@ -190,6 +249,12 @@
             }
 
             public IParsingResult Name { get; private set; }
+
+            public void Demangle(DemanglingContext context)
+            {
+                context.Writer.Append("guard variable for ");
+                Name.Demangle(context);
+            }
         }
 
         internal class GuardTemporary : IParsingResult
@@ -201,20 +266,15 @@
             }
 
             public int Index { get; private set; }
+
             public IParsingResult Name { get; private set; }
-        }
 
-        internal class VirtualOverrideThunk : IParsingResult
-        {
-            public VirtualOverrideThunk(IParsingResult offset, IParsingResult encoding)
+            public void Demangle(DemanglingContext context)
             {
-                Offset = offset;
-                Encoding = encoding;
+                context.Writer.Append("{static initialization guard temporary(");
+                Name.Demangle(context);
+                context.Writer.Append($", {Index})}}");
             }
-
-            public IParsingResult Encoding { get; private set; }
-
-            public IParsingResult Offset { get; private set; }
         }
     }
 }

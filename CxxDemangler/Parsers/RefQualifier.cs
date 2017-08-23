@@ -36,5 +36,10 @@
         {
             return DictionaryParser<Values>.StartsWith(context);
         }
+
+        public void Demangle(DemanglingContext context)
+        {
+            DictionaryParser<Values>.Demangle(Value, context);
+        }
     }
 }

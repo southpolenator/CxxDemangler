@@ -11,8 +11,10 @@
     // <substitution> ::= Si # ::std::basic_istream<char,  std::char_traits<char> >
     // <substitution> ::= So # ::std::basic_ostream<char,  std::char_traits<char> >
     // <substitution> ::= Sd # ::std::basic_iostream<char, std::char_traits<char> >
-    internal class Substitution : IParsingResult
+    internal class Substitution : IParsingResultExtended
     {
+        private IParsingResult resolvedReference;
+
         public Substitution(int reference)
         {
             Reference = reference;
@@ -20,9 +22,9 @@
 
         public int Reference { get; private set; }
 
-        public static IParsingResult Parse(ParsingContext context)
+        public static IParsingResultExtended Parse(ParsingContext context)
         {
-            IParsingResult wellKnown = WellKnownComponent.Parse(context);
+            IParsingResultExtended wellKnown = WellKnownComponent.Parse(context);
 
             if (wellKnown != null)
             {
@@ -51,7 +53,24 @@
                 return null;
             }
 
-            return new Substitution(number);
+            Substitution substitution = new Substitution(number);
+
+            substitution.resolvedReference = context.SubstitutionTable.Substitutions[number];
+            return substitution;
+        }
+
+        public void Demangle(DemanglingContext context)
+        {
+            IParsingResult reference = resolvedReference ?? context.SubstitutionTable.Substitutions[Reference];
+
+            reference.Demangle(context);
+        }
+
+        public TemplateArgs GetTemplateArgs()
+        {
+            IParsingResultExtended extended = resolvedReference as IParsingResultExtended;
+
+            return extended?.GetTemplateArgs();
         }
     }
 }

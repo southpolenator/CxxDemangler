@@ -21,5 +21,11 @@
             }
             return null;
         }
+
+        public void Demangle(DemanglingContext context)
+        {
+            context.Writer.Append("~");
+            Name.Demangle(context);
+        }
     }
 }
