@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
     <AssemblyName>CxxDemangler</AssemblyName>
     <PackageId>CxxDemangler</PackageId>
 
@@ -19,7 +19,6 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,6 +31,10 @@
     <OutputPath>..\bin\Release\</OutputPath>
     <DebugType>full</DebugType>
     <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>$(OutputPath)\$(TargetFramework)\CxxDemangler.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
