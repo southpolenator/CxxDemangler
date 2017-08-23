@@ -3,10 +3,21 @@ using System.Collections.Generic;
 
 namespace CxxDemangler
 {
-    public class CxxDemangler
+    /// <summary>
+    /// Static class that provides C++ linker symbol demangler functionality.
+    /// </summary>
+    public static class CxxDemangler
     {
         internal delegate IParsingResult ParsingFunction(ParsingContext context);
 
+        /// <summary>
+        /// Demangles the specified C++ linker symbol input.
+        /// </summary>
+        /// <param name="input">C++ linker symbol input</param>
+        /// <remarks>
+        /// If input is not in correct format, original input is returned.
+        /// </remarks>
+        /// <returns>Demangled C++ linker symbol input.</returns>
         public static string Demangle(string input)
         {
             ParsingContext parsingContext = CreateContext(input);
