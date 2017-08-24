@@ -9,6 +9,10 @@
     <AssemblyName>CxxDemangler.Tests</AssemblyName>
 
     <RootNamespace>CxxDemangler.Tests</RootNamespace>
+
+    <SignAssembly>true</SignAssembly>
+
+    <AssemblyOriginatorKeyFile>..\CxxDemangler.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

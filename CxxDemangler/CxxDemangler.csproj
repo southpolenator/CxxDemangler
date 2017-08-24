@@ -35,6 +35,8 @@
 
   <PropertyGroup>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\CxxDemangler.xml</DocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\CxxDemangler.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
