@@ -11,8 +11,8 @@
     <RootNamespace>CxxDemangler.Tests</RootNamespace>
 
     <SignAssembly>true</SignAssembly>
-
     <AssemblyOriginatorKeyFile>..\CxxDemangler.snk</AssemblyOriginatorKeyFile>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
