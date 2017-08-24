@@ -79,6 +79,13 @@
                 {
                     context.Writer.Append("nullptr");
                 }
+                else if (context.GccCompatibleDemangle && !string.IsNullOrEmpty(Name))
+                {
+                    context.Writer.Append("(");
+                    Type.Demangle(context);
+                    context.Writer.Append(")");
+                    context.Writer.Append(Name);
+                }
                 else
                 {
                     Type.Demangle(context);

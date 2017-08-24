@@ -14,18 +14,21 @@ namespace CxxDemangler
         /// Demangles the specified C++ linker symbol input.
         /// </summary>
         /// <param name="input">C++ linker symbol input</param>
+        /// <param name="gccCompatibleDemangle">if set to <c>true</c> result will be GCC compatible.</param>
+        /// <returns>
+        /// Demangled C++ linker symbol input.
+        /// </returns>
         /// <remarks>
         /// If input is not in correct format, original input is returned.
         /// </remarks>
-        /// <returns>Demangled C++ linker symbol input.</returns>
-        public static string Demangle(string input)
+        public static string Demangle(string input, bool gccCompatibleDemangle = true)
         {
             ParsingContext parsingContext = CreateContext(input);
             IParsingResult result = Parse(parsingContext);
 
             if (result != null)
             {
-                DemanglingContext demanglingContext = DemanglingContext.Create(parsingContext);
+                DemanglingContext demanglingContext = DemanglingContext.Create(parsingContext, gccCompatibleDemangle);
 
                 result.Demangle(demanglingContext);
                 return demanglingContext.Writer.Text;

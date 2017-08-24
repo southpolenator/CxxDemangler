@@ -137,9 +137,17 @@
 
             public void Demangle(DemanglingContext context)
             {
-                context.Writer.Append("{vtable(");
-                Type.Demangle(context);
-                context.Writer.Append(");");
+                if (context.GccCompatibleDemangle)
+                {
+                    context.Writer.Append("vtable for ");
+                    Type.Demangle(context);
+                }
+                else
+                {
+                    context.Writer.Append("{vtable(");
+                    Type.Demangle(context);
+                    context.Writer.Append(");");
+                }
             }
         }
 
@@ -154,9 +162,17 @@
 
             public void Demangle(DemanglingContext context)
             {
-                context.Writer.Append("{vtt(");
-                Type.Demangle(context);
-                context.Writer.Append(");");
+                if (context.GccCompatibleDemangle)
+                {
+                    context.Writer.Append("VTT for ");
+                    Type.Demangle(context);
+                }
+                else
+                {
+                    context.Writer.Append("{vtt(");
+                    Type.Demangle(context);
+                    context.Writer.Append(");");
+                }
             }
         }
 

@@ -282,7 +282,7 @@
 
             public void DemangleAsInner(DemanglingContext context)
             {
-                context.Writer.Append("&");
+                context.Writer.Append("*");
                 if (context.Inner.Count > 0)
                 {
                     context.Inner.Pop().DemangleAsInner(context);
@@ -316,7 +316,7 @@
 
             public void DemangleAsInner(DemanglingContext context)
             {
-                context.Writer.Append("&");
+                context.Writer.Append("&&");
                 if (context.Inner.Count > 0)
                 {
                     context.Inner.Pop().DemangleAsInner(context);

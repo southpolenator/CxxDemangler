@@ -45,7 +45,7 @@ namespace CxxDemangler.Tests
             }
 
             // Demangle to verify that there are no exceptions
-            DemanglingContext demanglingContext = DemanglingContext.Create(parsingContext);
+            DemanglingContext demanglingContext = DemanglingContext.Create(parsingContext, true);
 
             result?.Demangle(demanglingContext);
             System.Console.WriteLine(demanglingContext.Writer.Text);

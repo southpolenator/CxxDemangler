@@ -94,13 +94,16 @@ namespace CxxDemangler
 
         public TemplateArgsStack Stack;
 
-        public static DemanglingContext Create(ParsingContext parsingContext)
+        public bool GccCompatibleDemangle { get; private set; }
+
+        public static DemanglingContext Create(ParsingContext parsingContext, bool gccCompatibleDemangle)
         {
             return new DemanglingContext()
             {
                 Writer = new SimpleStringWriter(),
                 Inner = new Stack<IDemangleAsInner>(),
                 SubstitutionTable = parsingContext.SubstitutionTable,
+                GccCompatibleDemangle = gccCompatibleDemangle,
             };
         }
     }
