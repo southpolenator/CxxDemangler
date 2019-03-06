@@ -30,7 +30,7 @@ namespace CxxDemangler.Parsers
 
                 foreach (char c in identifier)
                 {
-                    if (c != '_' && c != '.' && !char.IsLetterOrDigit(c))
+                    if (c != '$' && c != '_' && c != '.' && !char.IsLetterOrDigit(c))
                     {
                         correct = false;
                         break;

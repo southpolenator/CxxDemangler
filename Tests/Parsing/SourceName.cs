@@ -22,6 +22,14 @@ namespace CxxDemangler.Tests.Parsing
         }
 
         [TestMethod]
+        public void SourceName3()
+        {
+            Verify("3$_0abcdefghijklm",
+                new Parsers.SourceName.Identifier("$_0"),
+                endsWith: "abcdefghijklm");
+        }
+
+        [TestMethod]
         public void SourceNameFailures()
         {
             Assert.IsNull(Parse("0abc"));
