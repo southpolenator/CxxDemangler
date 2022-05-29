@@ -21,6 +21,19 @@
                 return new Std(name);
             }
 
+            if (context.Parser.VerifyString("L"))
+            {
+                IParsingResultExtended name = UnqualifiedName.Parse(context);
+
+                if (name == null)
+                {
+                    context.Rewind(rewind);
+                    return null;
+                }
+
+                return name;
+            }
+
             return UnqualifiedName.Parse(context);
         }
 
