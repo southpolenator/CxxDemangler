@@ -21,11 +21,19 @@ namespace CxxDemangler.Tests.Parsing
         }
 
         [TestMethod]
+        public void UnscopedNameFixedLength()
+        {
+            Verify("L10helloworld...",
+                new Parsers.SourceName.Identifier("helloworld"));
+        }
+
+        [TestMethod]
         public void UnscopedNameFailures()
         {
             Assert.IsNull(Parse("St..."));
             Assert.IsNull(Parse("..."));
             Assert.IsNull(Parse(""));
+            Assert.IsNull(Parse("L..."));
         }
 
         internal override IParsingResult Parse(ParsingContext context)
